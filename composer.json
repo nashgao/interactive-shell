@@ -1,0 +1,26 @@
+{
+    "name": "space-platform/contracts",
+    "description": "Shared contracts and interfaces for Space Platform packages",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Nash Gao",
+            "email": "nash@spaceplatform.co"
+        }
+    ],
+    "require": {
+        "php": "^8.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "SpacePlatform\\Contracts\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
