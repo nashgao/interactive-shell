@@ -1,0 +1,102 @@
+{
+    "space_utils": {
+        "enabled": true,
+        "auto_transform": true,
+        "strict_mode": true,
+        "prefer_native_fallback": false,
+        "enforcement": {
+            "mode": "mandatory",
+            "block_on_violation": true,
+            "auto_rollback": true,
+            "git_hook_integration": true,
+            "validation_level": "strict",
+            "rollback_on_failure": true,
+            "violations_threshold": 0,
+            "reporting": {
+                "log_violations": true,
+                "violations_file": ".claude/logs/violations.json",
+                "enforcement_log": ".claude/logs/enforcement.log"
+            }
+        },
+        "transformer": {
+            "verbose": false,
+            "auto_fix": true,
+            "backup_before_transform": true
+        },
+        "mappings": {
+            "registry": "../mappings/function-registry.json",
+            "enabled_categories": {
+                "array_operations": true,
+                "string_operations": true,
+                "file_operations": true,
+                "json_operations": true,
+                "time_operations": true,
+                "async_operations": true,
+                "data_structures": true,
+                "validation": true,
+                "error_handling": true,
+                "caching": true,
+                "math_operations": true,
+                "hashing": true
+            },
+            "custom_registries": [
+                ".claude/mappings/team-mappings.json",
+                ".claude/mappings/custom-mappings.json",
+                ".claude/mappings/project-mappings.json"
+            ],
+            "priority_overrides": {
+                "team": 60,
+                "custom": 70,
+                "project": 80
+            }
+        },
+        "patterns": {
+            "use_entity": true,
+            "use_collection": true,
+            "use_pipeline": true,
+            "use_concurrent": true,
+            "use_monads": true,
+            "enforce_strong_typing": true,
+            "prohibit_mixed_types": true,
+            "require_type_declarations": true
+        },
+        "validation_rules": {
+            "native_functions": {
+                "string_functions": {
+                    "prohibited": ["is_string", "strlen", "substr", "strtolower", "strtoupper", "trim", "explode", "implode", "str_replace"],
+                    "replacement": "IString::of()",
+                    "severity": "error"
+                },
+                "array_functions": {
+                    "prohibited": ["array_map", "array_filter", "array_reduce", "array_merge", "array_unique", "array_chunk", "array_slice"],
+                    "replacement": "Collection::from()",
+                    "severity": "error"
+                },
+                "file_functions": {
+                    "prohibited": ["file_get_contents", "file_put_contents", "file_exists", "is_file", "is_dir", "mkdir", "rmdir"],
+                    "replacement": "File::of()",
+                    "severity": "error"
+                }
+            },
+            "patterns": {
+                "factory_pattern": {
+                    "min_variants": 3,
+                    "severity": "error"
+                },
+                "mixed_types": {
+                    "require_justification": true,
+                    "severity": "warning"
+                },
+                "strict_types": {
+                    "required": true,
+                    "severity": "error"
+                }
+            }
+        }
+    },
+    "project": {
+        "type": "php",
+        "framework": "hyperf",
+        "php_version": "8.3"
+    }
+}

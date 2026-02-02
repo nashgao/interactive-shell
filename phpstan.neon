@@ -1,0 +1,25 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - tests
+    excludePaths:
+        # Hyperf integration relies on optional dependencies
+        - src/Server/Hyperf/
+        # E2E tests require Swoole extension
+        - tests/E2E/
+    ignoreErrors:
+        # Swoole classes are only available when ext-swoole is loaded
+        -
+            message: '#^Class Swoole\\#'
+            reportUnmatched: false
+        -
+            message: '#^Function go not found\.$#'
+            reportUnmatched: false
+        -
+            message: '#Function Swoole\\\\Coroutine\\\\run not found#'
+            reportUnmatched: false
+        # Unreachable branches from defensive type checks
+        -
+            message: '#Else branch is unreachable#'
+            reportUnmatched: false

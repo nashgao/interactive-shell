@@ -1,0 +1,786 @@
+[
+  {
+    "session_id": "deacd5fb-ff6c-43f1-a94c-0d9abba35943",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/deacd5fb-ff6c-43f1-a94c-0d9abba35943.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "deacd5fb-ff6c-43f1-a94c-0d9abba35943",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/deacd5fb-ff6c-43f1-a94c-0d9abba35943.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7c4602e1-5044-4cbc-a0c3-2359e3c81e8e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/7c4602e1-5044-4cbc-a0c3-2359e3c81e8e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "b44ddd7c-2e9d-4243-baac-e7e9685744dd",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/b44ddd7c-2e9d-4243-baac-e7e9685744dd.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "b44ddd7c-2e9d-4243-baac-e7e9685744dd",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/b44ddd7c-2e9d-4243-baac-e7e9685744dd.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "7c4602e1-5044-4cbc-a0c3-2359e3c81e8e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/7c4602e1-5044-4cbc-a0c3-2359e3c81e8e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "b44ddd7c-2e9d-4243-baac-e7e9685744dd",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/b44ddd7c-2e9d-4243-baac-e7e9685744dd.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7c4602e1-5044-4cbc-a0c3-2359e3c81e8e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/7c4602e1-5044-4cbc-a0c3-2359e3c81e8e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "7c4602e1-5044-4cbc-a0c3-2359e3c81e8e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/7c4602e1-5044-4cbc-a0c3-2359e3c81e8e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3c476405-c98d-472a-9dc2-a523eb1ae037",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/3c476405-c98d-472a-9dc2-a523eb1ae037.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ecbcf7d4-9d4e-49e4-95a0-3aaac28c913d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ecbcf7d4-9d4e-49e4-95a0-3aaac28c913d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "3c476405-c98d-472a-9dc2-a523eb1ae037",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/3c476405-c98d-472a-9dc2-a523eb1ae037.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ecbcf7d4-9d4e-49e4-95a0-3aaac28c913d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ecbcf7d4-9d4e-49e4-95a0-3aaac28c913d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ecbcf7d4-9d4e-49e4-95a0-3aaac28c913d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ecbcf7d4-9d4e-49e4-95a0-3aaac28c913d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ecbcf7d4-9d4e-49e4-95a0-3aaac28c913d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ecbcf7d4-9d4e-49e4-95a0-3aaac28c913d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3db0079f-5542-4105-a7b1-9900aac9d3cc",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/3db0079f-5542-4105-a7b1-9900aac9d3cc.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "3db0079f-5542-4105-a7b1-9900aac9d3cc",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/3db0079f-5542-4105-a7b1-9900aac9d3cc.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "3c476405-c98d-472a-9dc2-a523eb1ae037",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/3c476405-c98d-472a-9dc2-a523eb1ae037.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "5d0a2b9e-ab06-4621-932a-f7041023a00d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/5d0a2b9e-ab06-4621-932a-f7041023a00d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "3c476405-c98d-472a-9dc2-a523eb1ae037",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/3c476405-c98d-472a-9dc2-a523eb1ae037.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "e2afff91-e8d7-46e0-8cd9-8a6107a70dc3",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/e2afff91-e8d7-46e0-8cd9-8a6107a70dc3.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "e2afff91-e8d7-46e0-8cd9-8a6107a70dc3",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/e2afff91-e8d7-46e0-8cd9-8a6107a70dc3.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "5d0a2b9e-ab06-4621-932a-f7041023a00d",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/5d0a2b9e-ab06-4621-932a-f7041023a00d.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "e2afff91-e8d7-46e0-8cd9-8a6107a70dc3",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/e2afff91-e8d7-46e0-8cd9-8a6107a70dc3.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "6a93a8fe-8b1b-47a8-8628-da0f86138e77",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/6a93a8fe-8b1b-47a8-8628-da0f86138e77.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude needs your permission to use Bash",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "6a93a8fe-8b1b-47a8-8628-da0f86138e77",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/6a93a8fe-8b1b-47a8-8628-da0f86138e77.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "c78c8a29-bd0c-474e-8748-bc08345f691e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/c78c8a29-bd0c-474e-8748-bc08345f691e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "6a93a8fe-8b1b-47a8-8628-da0f86138e77",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/6a93a8fe-8b1b-47a8-8628-da0f86138e77.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "018ff1d7-e9ac-432a-9790-0f30f7512cf5",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/018ff1d7-e9ac-432a-9790-0f30f7512cf5.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "c9bc85e9-c2a1-4a01-aeac-22a22f89774a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/c9bc85e9-c2a1-4a01-aeac-22a22f89774a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "018ff1d7-e9ac-432a-9790-0f30f7512cf5",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/018ff1d7-e9ac-432a-9790-0f30f7512cf5.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "fa5e1e35-6220-4fea-8345-ab89d1ef9b67",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/fa5e1e35-6220-4fea-8345-ab89d1ef9b67.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "c9bc85e9-c2a1-4a01-aeac-22a22f89774a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/c9bc85e9-c2a1-4a01-aeac-22a22f89774a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "fa5e1e35-6220-4fea-8345-ab89d1ef9b67",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/fa5e1e35-6220-4fea-8345-ab89d1ef9b67.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "fa5e1e35-6220-4fea-8345-ab89d1ef9b67",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/fa5e1e35-6220-4fea-8345-ab89d1ef9b67.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "70cff93a-9bee-4c69-bb68-da6402e7c879",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/70cff93a-9bee-4c69-bb68-da6402e7c879.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "70cff93a-9bee-4c69-bb68-da6402e7c879",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/70cff93a-9bee-4c69-bb68-da6402e7c879.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "c9bc85e9-c2a1-4a01-aeac-22a22f89774a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/c9bc85e9-c2a1-4a01-aeac-22a22f89774a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "c2e3242d-b47c-45ae-b4f0-290a7a6f1b55",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/c2e3242d-b47c-45ae-b4f0-290a7a6f1b55.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "70cff93a-9bee-4c69-bb68-da6402e7c879",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/70cff93a-9bee-4c69-bb68-da6402e7c879.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "e11a012b-465e-4aba-900c-f282cfa000fd",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/e11a012b-465e-4aba-900c-f282cfa000fd.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "702edffa-257b-4044-b227-71290800713c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/702edffa-257b-4044-b227-71290800713c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "6a1bf67a-b661-4e02-b239-4ba1c5be3161",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/6a1bf67a-b661-4e02-b239-4ba1c5be3161.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "6a1bf67a-b661-4e02-b239-4ba1c5be3161",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/6a1bf67a-b661-4e02-b239-4ba1c5be3161.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ff2f4c69-9d32-497e-9169-369cd246a3da",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ff2f4c69-9d32-497e-9169-369cd246a3da.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ff2f4c69-9d32-497e-9169-369cd246a3da",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ff2f4c69-9d32-497e-9169-369cd246a3da.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "702edffa-257b-4044-b227-71290800713c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/702edffa-257b-4044-b227-71290800713c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ff2f4c69-9d32-497e-9169-369cd246a3da",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ff2f4c69-9d32-497e-9169-369cd246a3da.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "702edffa-257b-4044-b227-71290800713c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/702edffa-257b-4044-b227-71290800713c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "960fe9b8-028f-4758-9c25-3e9320e5eb13",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/960fe9b8-028f-4758-9c25-3e9320e5eb13.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f246fa01-fdbf-40fd-b4bb-317ea6ba82a2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/f246fa01-fdbf-40fd-b4bb-317ea6ba82a2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "f246fa01-fdbf-40fd-b4bb-317ea6ba82a2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/f246fa01-fdbf-40fd-b4bb-317ea6ba82a2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "f246fa01-fdbf-40fd-b4bb-317ea6ba82a2",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/f246fa01-fdbf-40fd-b4bb-317ea6ba82a2.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "23c84b9f-db09-477d-9554-63505de74696",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/23c84b9f-db09-477d-9554-63505de74696.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "23c84b9f-db09-477d-9554-63505de74696",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/23c84b9f-db09-477d-9554-63505de74696.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ff2f4c69-9d32-497e-9169-369cd246a3da",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ff2f4c69-9d32-497e-9169-369cd246a3da.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "ff2f4c69-9d32-497e-9169-369cd246a3da",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ff2f4c69-9d32-497e-9169-369cd246a3da.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "23c84b9f-db09-477d-9554-63505de74696",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/23c84b9f-db09-477d-9554-63505de74696.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "36c8284d-38e4-4b09-89a6-4457482ab91e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/36c8284d-38e4-4b09-89a6-4457482ab91e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "36c8284d-38e4-4b09-89a6-4457482ab91e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/36c8284d-38e4-4b09-89a6-4457482ab91e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "106d278c-9293-4e5b-8e70-83e7c5aadafa",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/106d278c-9293-4e5b-8e70-83e7c5aadafa.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "106d278c-9293-4e5b-8e70-83e7c5aadafa",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/106d278c-9293-4e5b-8e70-83e7c5aadafa.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "106d278c-9293-4e5b-8e70-83e7c5aadafa",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/106d278c-9293-4e5b-8e70-83e7c5aadafa.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "ff2f4c69-9d32-497e-9169-369cd246a3da",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/ff2f4c69-9d32-497e-9169-369cd246a3da.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "67cf29c7-f321-4b30-838b-e85078f2ae98",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/67cf29c7-f321-4b30-838b-e85078f2ae98.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "67cf29c7-f321-4b30-838b-e85078f2ae98",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/67cf29c7-f321-4b30-838b-e85078f2ae98.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "b8842c56-891b-4da9-bc4c-42566050fb5a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/b8842c56-891b-4da9-bc4c-42566050fb5a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "67cf29c7-f321-4b30-838b-e85078f2ae98",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/67cf29c7-f321-4b30-838b-e85078f2ae98.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "b8842c56-891b-4da9-bc4c-42566050fb5a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/b8842c56-891b-4da9-bc4c-42566050fb5a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "67cf29c7-f321-4b30-838b-e85078f2ae98",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/67cf29c7-f321-4b30-838b-e85078f2ae98.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your attention",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "b8842c56-891b-4da9-bc4c-42566050fb5a",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/b8842c56-891b-4da9-bc4c-42566050fb5a.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "67cf29c7-f321-4b30-838b-e85078f2ae98",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/67cf29c7-f321-4b30-838b-e85078f2ae98.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "adee91a4-d0c3-4526-998b-237bad9bf704",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/adee91a4-d0c3-4526-998b-237bad9bf704.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "fa474d4d-2603-4310-9529-ceb249653f1e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/fa474d4d-2603-4310-9529-ceb249653f1e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "adee91a4-d0c3-4526-998b-237bad9bf704",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/adee91a4-d0c3-4526-998b-237bad9bf704.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "fa474d4d-2603-4310-9529-ceb249653f1e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/fa474d4d-2603-4310-9529-ceb249653f1e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "fa474d4d-2603-4310-9529-ceb249653f1e",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/fa474d4d-2603-4310-9529-ceb249653f1e.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "486c3d19-74d9-48e9-b0a1-9aadf0d22d44",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/486c3d19-74d9-48e9-b0a1-9aadf0d22d44.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "adee91a4-d0c3-4526-998b-237bad9bf704",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/adee91a4-d0c3-4526-998b-237bad9bf704.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "adee91a4-d0c3-4526-998b-237bad9bf704",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/adee91a4-d0c3-4526-998b-237bad9bf704.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "a8f54e94-2c96-4020-9509-d648027be5fd",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/a8f54e94-2c96-4020-9509-d648027be5fd.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "a8f54e94-2c96-4020-9509-d648027be5fd",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/a8f54e94-2c96-4020-9509-d648027be5fd.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "a8f54e94-2c96-4020-9509-d648027be5fd",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/a8f54e94-2c96-4020-9509-d648027be5fd.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "4cb9d860-6905-4598-b17b-e0109f95fbcb",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/4cb9d860-6905-4598-b17b-e0109f95fbcb.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "486c3d19-74d9-48e9-b0a1-9aadf0d22d44",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/486c3d19-74d9-48e9-b0a1-9aadf0d22d44.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "486c3d19-74d9-48e9-b0a1-9aadf0d22d44",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/486c3d19-74d9-48e9-b0a1-9aadf0d22d44.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "486c3d19-74d9-48e9-b0a1-9aadf0d22d44",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/486c3d19-74d9-48e9-b0a1-9aadf0d22d44.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "486c3d19-74d9-48e9-b0a1-9aadf0d22d44",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/486c3d19-74d9-48e9-b0a1-9aadf0d22d44.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "4cb9d860-6905-4598-b17b-e0109f95fbcb",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/4cb9d860-6905-4598-b17b-e0109f95fbcb.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "de31cd3c-72f6-4352-a853-1bec49ca4169",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/de31cd3c-72f6-4352-a853-1bec49ca4169.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "de31cd3c-72f6-4352-a853-1bec49ca4169",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/de31cd3c-72f6-4352-a853-1bec49ca4169.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "de31cd3c-72f6-4352-a853-1bec49ca4169",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/de31cd3c-72f6-4352-a853-1bec49ca4169.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "4b7742f2-40c8-4f92-9bbf-3180e87e7a1c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/4b7742f2-40c8-4f92-9bbf-3180e87e7a1c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "c83c00ba-47b8-466a-a3c8-d4773172ac46",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/c83c00ba-47b8-466a-a3c8-d4773172ac46.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "4b7742f2-40c8-4f92-9bbf-3180e87e7a1c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/4b7742f2-40c8-4f92-9bbf-3180e87e7a1c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "c83c00ba-47b8-466a-a3c8-d4773172ac46",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/c83c00ba-47b8-466a-a3c8-d4773172ac46.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude is waiting for your input",
+    "notification_type": "idle_prompt"
+  },
+  {
+    "session_id": "4b7742f2-40c8-4f92-9bbf-3180e87e7a1c",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/4b7742f2-40c8-4f92-9bbf-3180e87e7a1c.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  },
+  {
+    "session_id": "c83c00ba-47b8-466a-a3c8-d4773172ac46",
+    "transcript_path": "/Users/nashgao/.claude/projects/-Users-nashgao-Desktop-lang-php-pkg-interactive-shell/c83c00ba-47b8-466a-a3c8-d4773172ac46.jsonl",
+    "cwd": "/Users/nashgao/Desktop/lang/php/pkg/interactive-shell",
+    "hook_event_name": "Notification",
+    "message": "Claude Code needs your approval for the plan",
+    "notification_type": "permission_prompt"
+  }
+]

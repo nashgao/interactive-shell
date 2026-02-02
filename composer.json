@@ -1,26 +1,52 @@
 {
-    "name": "space-platform/contracts",
-    "description": "Shared contracts and interfaces for Space Platform packages",
+    "name": "nashgao/interactive-shell",
+    "description": "Interactive shell library with pluggable transports and streaming support",
     "type": "library",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Nash Gao",
-            "email": "nash@spaceplatform.co"
+            "email": "cweagans@gmail.com"
         }
     ],
     "require": {
-        "php": "^8.3"
+        "php": ">=8.1",
+        "symfony/console": "^6.0|^7.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0|^11.0",
+        "phpstan/phpstan": "^1.10"
+    },
+    "suggest": {
+        "ext-swoole": "Required for StreamingShell and SocketServer with coroutine-based I/O",
+        "ext-readline": "Recommended for better input handling and history navigation",
+        "hyperf/process": "Required for ShellProcess in Hyperf integration",
+        "hyperf/config": "Required for HyperfContext configuration access"
     },
     "autoload": {
         "psr-4": {
-            "SpacePlatform\\Contracts\\": "src/"
+            "NashGao\\InteractiveShell\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "NashGao\\InteractiveShell\\Tests\\": "tests/"
         }
     },
     "config": {
-        "optimize-autoloader": true,
         "sort-packages": true
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-html coverage --coverage-text",
+        "phpstan": "phpstan analyse src --level=max --no-progress"
+    },
+    "extra": {
+        "hyperf": {
+            "config": "NashGao\\InteractiveShell\\Server\\Hyperf\\ConfigProvider"
+        }
+    }
 }

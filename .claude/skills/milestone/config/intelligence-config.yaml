@@ -1,0 +1,470 @@
+# Master Intelligence Enhancement Configuration
+# Consolidated configuration for selective intelligence enhancement milestones
+# with SQLite memory, pattern recognition, decision engine, and MCP integration
+
+# Configuration Metadata
+config_version: "1.0.0"
+created_at: "2025-01-21T00:00:00Z"
+description: "Master configuration for intelligence enhancement milestones"
+compatibility: "claude-code-v1.x"
+
+# Intelligence Enhancement Settings
+intelligence:
+  # Core Intelligence Configuration
+  mode: "selective"  # selective | comprehensive | adaptive | experimental
+  complexity_level: "medium"  # simple | medium | complex | enterprise
+  learning_enabled: true
+  auto_optimization: false  # Enable automatic optimization based on patterns
+  
+  # Intelligence Components
+  components:
+    sqlite_memory:
+      enabled: true
+      persistence_level: "full"  # minimal | partial | full
+      retention_policy: "smart"  # time_based | smart | indefinite
+      auto_cleanup: true
+      
+    pattern_recognition:
+      enabled: true
+      learning_mode: "supervised"  # supervised | unsupervised | hybrid
+      confidence_threshold: 0.7
+      auto_detection: true
+      pattern_categories:
+        - "anti_patterns"
+        - "design_patterns" 
+        - "performance_patterns"
+        - "process_patterns"
+        - "quality_patterns"
+      
+    decision_engine:
+      enabled: true
+      tracking_mode: "comprehensive"  # basic | comprehensive | minimal
+      outcome_learning: true
+      confidence_calibration: true
+      auto_recommendations: false
+      
+    mcp_integration:
+      enabled: true
+      auto_invoke: false  # Automatically invoke MCP tools when appropriate
+      tools_whitelist: []  # Empty = all tools allowed
+      quality_gates: true
+
+# KIRO Workflow Configuration for Intelligence Projects
+kiro_intelligence:
+  # Enhanced phase weights for intelligence work
+  phase_weights:
+    design: 25    # Higher for architecture-heavy intelligence work
+    spec: 30      # Higher for detailed specifications
+    task: 15      # Lower, more focused task breakdown
+    execute: 30   # Balanced implementation
+
+  # Intelligence-specific approval gates
+  approval_gates:
+    architecture_design:
+      required: true
+      approvers: ["system_architect", "intelligence_lead"]
+      criteria:
+        - "sqlite_schema_validated"
+        - "pattern_recognition_designed"
+        - "decision_engine_specified"
+        - "performance_requirements_defined"
+    
+    specification_complete:
+      required: true
+      approvers: ["technical_lead", "data_architect"]
+      criteria:
+        - "api_specifications_complete"
+        - "integration_patterns_documented"
+        - "test_strategies_defined"
+        - "deployment_approach_approved"
+    
+    implementation_ready:
+      required: false  # Optional for faster iteration
+      approvers: ["tech_lead"]
+      criteria:
+        - "task_breakdown_complete"
+        - "dependencies_resolved"
+    
+    deployment_validation:
+      required: true
+      approvers: ["system_architect", "qa_lead"]
+      criteria:
+        - "intelligence_features_validated"
+        - "performance_benchmarks_met"
+        - "integration_tests_passed"
+
+  # Intelligence deliverable templates
+  deliverable_templates:
+    design:
+      - "intelligence_architecture.md"
+      - "sqlite_schema_design.sql"
+      - "integration_patterns.md"
+      - "performance_requirements.yaml"
+    
+    spec:
+      - "api_specifications.yaml"
+      - "data_models.md"
+      - "test_strategy.md"
+      - "deployment_guide.md"
+    
+    task:
+      - "implementation_tasks.md"
+      - "integration_checklist.md"
+      - "testing_plan.md"
+      - "validation_criteria.md"
+    
+    execute:
+      - "implementation_code"
+      - "test_suites"
+      - "documentation"
+      - "performance_results"
+      - "deployment_artifacts"
+
+# SQLite Configuration
+sqlite:
+  # Database Configuration
+  databases:
+    memory:
+      path: ".milestones/intelligence/memory.sqlite"
+      journal_mode: "WAL"
+      synchronous: "NORMAL"
+      cache_size: 10000
+      temp_store: "MEMORY"
+      
+    patterns:
+      path: ".milestones/intelligence/patterns.sqlite"
+      journal_mode: "WAL"
+      synchronous: "NORMAL"
+      cache_size: 5000
+      
+    decisions:
+      path: ".milestones/intelligence/decisions.sqlite"
+      journal_mode: "WAL"
+      synchronous: "NORMAL"
+      cache_size: 5000
+      
+    mcp_interactions:
+      path: ".milestones/intelligence/mcp_interactions.sqlite"
+      journal_mode: "WAL"
+      synchronous: "NORMAL"
+      cache_size: 3000
+
+  # Performance Settings
+  performance:
+    connection_pool_size: 5
+    query_timeout_ms: 5000
+    batch_size: 1000
+    optimize_frequency: "weekly"
+    vacuum_frequency: "monthly"
+    
+  # Data Management
+  data_management:
+    backup_frequency: "daily"
+    backup_retention_days: 30
+    compression_enabled: true
+    encryption_at_rest: false  # Enable for sensitive projects
+    
+  # Maintenance
+  maintenance:
+    auto_cleanup: true
+    retention_policies:
+      memory_entries: "365 days"
+      pattern_data: "730 days" 
+      decision_history: "1095 days"  # 3 years
+      mcp_logs: "90 days"
+    
+    cleanup_schedule: "weekly"
+    optimization_schedule: "monthly"
+
+# Pattern Recognition Configuration
+pattern_recognition:
+  # Detection Settings
+  detection:
+    real_time: true
+    batch_analysis: true
+    confidence_threshold: 0.7
+    severity_threshold: 0.5
+    
+  # Pattern Categories Configuration
+  categories:
+    anti_patterns:
+      enabled: true
+      auto_fix_suggestions: true
+      severity_weights:
+        code_smells: 0.3
+        design_violations: 0.7
+        performance_issues: 0.8
+        security_risks: 1.0
+    
+    design_patterns:
+      enabled: true
+      suggestion_mode: "adaptive"  # conservative | adaptive | aggressive
+      pattern_library: "extended"  # minimal | standard | extended
+      
+    performance_patterns:
+      enabled: true
+      monitoring_enabled: true
+      benchmark_comparison: true
+      optimization_suggestions: true
+      
+    process_patterns:
+      enabled: true
+      workflow_analysis: true
+      bottleneck_detection: true
+      improvement_recommendations: true
+
+  # Learning Configuration
+  learning:
+    mode: "hybrid"  # supervised | unsupervised | hybrid
+    adaptation_rate: 0.1
+    feedback_integration: true
+    pattern_evolution: true
+    
+  # Validation
+  validation:
+    cross_validation: true
+    test_set_percentage: 20
+    validation_frequency: "weekly"
+    accuracy_targets:
+      anti_pattern_detection: 0.85
+      design_pattern_recognition: 0.90
+      performance_pattern_detection: 0.80
+
+# Decision Engine Configuration
+decision_engine:
+  # Tracking Configuration
+  tracking:
+    auto_detection: true
+    context_capture: "comprehensive"  # minimal | standard | comprehensive
+    stakeholder_mapping: true
+    dependency_tracking: true
+    
+  # Decision Types
+  decision_types:
+    technical:
+      tracking_enabled: true
+      approval_workflow: false
+      outcome_learning: true
+      
+    process:
+      tracking_enabled: true
+      approval_workflow: true
+      stakeholder_notification: true
+      
+    resource:
+      tracking_enabled: true
+      approval_workflow: true
+      budget_impact_analysis: true
+      
+    timeline:
+      tracking_enabled: true
+      approval_workflow: false
+      schedule_impact_analysis: true
+
+  # Outcome Learning
+  outcome_learning:
+    enabled: true
+    correlation_analysis: true
+    confidence_calibration: true
+    prediction_improvement: true
+    
+  # Analytics
+  analytics:
+    decision_velocity_tracking: true
+    outcome_accuracy_measurement: true
+    pattern_recognition: true
+    bottleneck_identification: true
+
+# MCP Tool Integration Configuration  
+mcp_integration:
+  # Connection Settings
+  connection:
+    endpoint: "localhost:8080"
+    timeout_ms: 30000
+    retry_attempts: 3
+    retry_delay_ms: 1000
+    
+  # Tool Configuration
+  tools:
+    pattern_analyzer:
+      enabled: true
+      auto_invoke_triggers:
+        - "code_change_detected"
+        - "milestone_phase_complete"
+      confidence_threshold: 0.6
+      
+    decision_assistant:
+      enabled: true
+      auto_invoke_triggers:
+        - "decision_point_created"
+        - "complex_decision_detected"
+      recommendation_mode: "advisory"  # advisory | automatic
+      
+    code_quality_checker:
+      enabled: true
+      auto_invoke_triggers:
+        - "code_commit"
+        - "pull_request_created"
+      quality_gates: true
+      
+    intelligence_optimizer:
+      enabled: false  # Disabled by default for safety
+      auto_invoke_triggers: []
+      manual_approval_required: true
+
+  # Quality Gates
+  quality_gates:
+    confidence_threshold: 0.7
+    performance_threshold_ms: 1000
+    error_rate_threshold: 0.05
+    validation_required: true
+
+  # Monitoring
+  monitoring:
+    effectiveness_tracking: true
+    performance_monitoring: true
+    error_tracking: true
+    usage_analytics: true
+
+# Quality Assurance Configuration
+quality_assurance:
+  # Validation Requirements
+  validation:
+    intelligence_effectiveness: true
+    performance_benchmarks: true
+    integration_testing: true
+    security_scanning: false  # Enable for sensitive projects
+    
+  # Performance Requirements
+  performance:
+    memory_operations_max_ms: 50
+    pattern_analysis_max_seconds: 30
+    decision_tracking_overhead_max_percent: 5
+    database_query_max_ms: 100
+    
+  # Reliability Requirements
+  reliability:
+    uptime_target_percent: 99.5
+    data_integrity_validation: true
+    backup_verification: true
+    disaster_recovery_testing: false  # Enable for critical projects
+
+# Security Configuration
+security:
+  # Data Protection
+  data_protection:
+    encryption_in_transit: true
+    encryption_at_rest: false  # Enable for sensitive data
+    access_logging: true
+    audit_trail: true
+    
+  # Access Control
+  access_control:
+    role_based_access: false  # Enable for team projects
+    api_authentication: false  # Enable for remote access
+    rate_limiting: true
+    
+  # Privacy
+  privacy:
+    data_anonymization: false  # Enable if required
+    gdpr_compliance: false     # Enable if required
+    retention_policy_enforcement: true
+
+# Monitoring and Alerting
+monitoring:
+  # Performance Monitoring
+  performance:
+    enabled: true
+    metrics:
+      - "response_time"
+      - "throughput"
+      - "error_rate"
+      - "resource_utilization"
+    alerting_thresholds:
+      response_time_ms: 100
+      error_rate_percent: 5
+      
+  # Intelligence Monitoring
+  intelligence:
+    pattern_detection_accuracy: true
+    decision_confidence_tracking: true
+    learning_effectiveness: true
+    
+  # System Health
+  system_health:
+    database_health_checks: true
+    memory_usage_monitoring: true
+    disk_space_monitoring: true
+
+# Deployment Configuration
+deployment:
+  # Strategy
+  strategy: "progressive"  # blue_green | rolling | progressive
+  
+  # Environment Configuration
+  environments:
+    development:
+      intelligence_mode: "experimental"
+      logging_level: "debug"
+      performance_monitoring: false
+      
+    staging:
+      intelligence_mode: "adaptive"
+      logging_level: "info"
+      performance_monitoring: true
+      
+    production:
+      intelligence_mode: "selective"
+      logging_level: "warn"
+      performance_monitoring: true
+      backup_frequency: "hourly"
+
+  # Rollback Configuration
+  rollback:
+    auto_rollback_triggers:
+      - "error_rate > 10%"
+      - "response_time > 500ms"
+      - "intelligence_accuracy < 70%"
+    manual_approval_required: false
+
+# Integration Configuration
+integrations:
+  # Git Integration
+  git:
+    enabled: true
+    commit_intelligence_updates: false
+    branch_pattern_analysis: true
+    pr_intelligence_checks: true
+    
+  # CI/CD Integration
+  cicd:
+    enabled: false  # Enable based on project needs
+    intelligence_gates: false
+    performance_regression_detection: false
+    
+  # Notification Systems
+  notifications:
+    email: false
+    slack: false
+    webhook: false
+
+# Advanced Configuration
+advanced:
+  # Experimental Features
+  experimental:
+    enabled: false
+    features: []  # List experimental features to enable
+    
+  # Custom Extensions
+  extensions:
+    enabled: false
+    custom_patterns: []
+    custom_decision_types: []
+    custom_mcp_tools: []
+    
+  # Developer Settings
+  developer:
+    debug_mode: false
+    profiling_enabled: false
+    detailed_logging: false
+    development_shortcuts: false
