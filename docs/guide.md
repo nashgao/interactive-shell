@@ -11,10 +11,15 @@ A production-grade interactive shell library for PHP applications with MySQL-lik
 3. [Command Execution Flow](#command-execution-flow)
 4. [Transport Options](#transport-options)
 5. [Creating Custom Handlers](#creating-custom-handlers)
-6. [Hyperf Integration](#hyperf-integration)
-7. [Streaming Mode](#streaming-mode)
-8. [Output Formats](#output-formats)
-9. [Testing Guide](#testing-guide)
+6. [API Reference](#api-reference)
+7. [Handler Patterns](#handler-patterns)
+8. [Hyperf Integration](#hyperf-integration)
+9. [Streaming Mode](#streaming-mode)
+10. [Message System](#message-system)
+11. [State Management](#state-management)
+12. [Non-Hyperf Integration](#non-hyperf-integration)
+13. [Output Formats](#output-formats)
+14. [Testing Guide](#testing-guide)
 
 ---
 
@@ -381,6 +386,302 @@ return [
 
 ---
 
+## API Reference
+
+This section documents the core interfaces and classes for building custom integrations.
+
+### ParsedCommand
+
+Immutable value object representing a parsed shell command.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `$command` | `string` | The command name |
+| `$arguments` | `array<int, string>` | Positional arguments indexed from 0 |
+| `$options` | `array<string, mixed>` | Named options as key-value pairs |
+| `$raw` | `string` | Original raw input string |
+| `$hasVerticalTerminator` | `bool` | Whether input ended with `\G` |
+
+**Methods:**
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `getArgument()` | `getArgument(int $index, mixed $default = null): mixed` | Get positional argument by index |
+| `getOption()` | `getOption(string $key, mixed $default = null): mixed` | Get named option value |
+| `hasOption()` | `hasOption(string $key): bool` | Check if option exists |
+| `empty()` | `static empty(): self` | Create empty parsed command |
+
+### CommandResult
+
+Immutable value object representing command execution result.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `$success` | `bool` | Whether the command succeeded |
+| `$data` | `mixed` | Command-specific result payload |
+| `$error` | `?string` | Error message if `success=false` |
+| `$message` | `?string` | Human-readable summary message |
+| `$metadata` | `array<string, mixed>` | Operational metadata (duration, counts, etc.) |
+
+**Factory Methods:**
+
+| Method | Signature | Purpose |
+|--------|-----------|---------|
+| `success()` | `success(mixed $data = null, ?string $message = null, array $metadata = []): self` | Create success result |
+| `failure()` | `failure(string $error, mixed $data = null, array $metadata = []): self` | Create failure result |
+| `fromException()` | `fromException(Throwable $e, array $metadata = []): self` | Create from throwable |
+| `fromResponse()` | `fromResponse(array $response): self` | Create from array response |
+
+**Instance Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `getExitCode(): int` | Get CLI exit code (0 for success, 1 for failure) |
+| `withMetadata(array $metadata): self` | Create new result with merged metadata |
+| `withMessage(string $message): self` | Create new result with message |
+| `toArray(): array` | Convert to array representation |
+
+### ContextInterface
+
+Framework context abstraction for server-side command handlers.
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `getContainer()` | `getContainer(): ContainerInterface` | Get PSR-11 container instance |
+| `getConfig()` | `getConfig(): array` | Get all configuration as array |
+| `get()` | `get(string $key, mixed $default = null): mixed` | Get config by dot-notation key |
+| `has()` | `has(string $key): bool` | Check if config key exists |
+
+### TransportInterface
+
+Client-side transport for sending commands to the server.
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `connect()` | `connect(): void` | Establish connection |
+| `disconnect()` | `disconnect(): void` | Close connection |
+| `isConnected()` | `isConnected(): bool` | Check connection status |
+| `send()` | `send(ParsedCommand $command): CommandResult` | Send command, receive result |
+| `ping()` | `ping(): bool` | Health check |
+| `getEndpoint()` | `getEndpoint(): string` | Get endpoint URL/path |
+| `getInfo()` | `getInfo(): array` | Get endpoint information |
+
+### StreamingTransportInterface
+
+Extended transport for bidirectional streaming (extends `TransportInterface`).
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `supportsStreaming()` | `supportsStreaming(): bool` | Check streaming support |
+| `sendAsync()` | `sendAsync(ParsedCommand $command): void` | Send without waiting |
+| `receive()` | `receive(float $timeout = -1): ?Message` | Receive message from stream |
+| `onMessage()` | `onMessage(callable $callback): void` | Register message callback |
+| `startStreaming()` | `startStreaming(): void` | Start streaming loop |
+| `stopStreaming()` | `stopStreaming(): void` | Stop streaming loop |
+| `isStreaming()` | `isStreaming(): bool` | Check if in streaming mode |
+
+---
+
+## Handler Patterns
+
+This section provides concrete patterns for implementing robust command handlers.
+
+### Error Handling Pattern
+
+Always validate inputs and return meaningful error messages:
+
+```php
+<?php
+
+use NashGao\InteractiveShell\Command\CommandResult;
+use NashGao\InteractiveShell\Parser\ParsedCommand;
+use NashGao\InteractiveShell\Server\ContextInterface;
+use NashGao\InteractiveShell\Server\Handler\CommandHandlerInterface;
+
+final class ConfigGetHandler implements CommandHandlerInterface
+{
+    public function getCommand(): string
+    {
+        return 'config:get';
+    }
+
+    public function handle(ParsedCommand $command, ContextInterface $context): CommandResult
+    {
+        $key = $command->getArgument(0);
+
+        // Validate required argument
+        if ($key === null || $key === '') {
+            return CommandResult::failure('Missing required argument: key');
+        }
+
+        // Check if key exists
+        if (!$context->has($key)) {
+            return CommandResult::failure(
+                sprintf("Config key '%s' not found", $key),
+                ['available_keys' => array_keys($context->getConfig())]
+            );
+        }
+
+        return CommandResult::success($context->get($key));
+    }
+
+    public function getDescription(): string
+    {
+        return 'Get a configuration value by key';
+    }
+
+    public function getUsage(): array
+    {
+        return [
+            'config:get database.host' => 'Get database host',
+            'config:get app.name'      => 'Get application name',
+        ];
+    }
+}
+```
+
+### Options Processing Pattern
+
+Process command options with defaults and type coercion:
+
+```php
+public function handle(ParsedCommand $command, ContextInterface $context): CommandResult
+{
+    // Option with default value
+    $format = $command->getOption('format', 'table');
+
+    // Boolean flag options (short and long form)
+    $verbose = $command->hasOption('v') || $command->hasOption('verbose');
+
+    // Numeric option with type coercion
+    $limit = (int) $command->getOption('limit', 100);
+
+    // Multiple positional arguments
+    $action = $command->getArgument(0);  // First argument
+    $target = $command->getArgument(1);  // Second argument
+
+    // Check for vertical terminator (\G)
+    if ($command->hasVerticalTerminator) {
+        $format = 'vertical';
+    }
+
+    // ... use the processed options
+}
+```
+
+### Dependency Injection Pattern
+
+Inject services via constructor for testable handlers:
+
+```php
+<?php
+
+use NashGao\InteractiveShell\Command\CommandResult;
+use NashGao\InteractiveShell\Parser\ParsedCommand;
+use NashGao\InteractiveShell\Server\ContextInterface;
+use NashGao\InteractiveShell\Server\Handler\CommandHandlerInterface;
+use NashGao\InteractiveShell\Server\Handler\CommandRegistry;
+
+final class UsersHandler implements CommandHandlerInterface
+{
+    public function __construct(
+        private readonly UserRepository $users,
+        private readonly CommandRegistry $registry  // For help cross-references
+    ) {}
+
+    public function getCommand(): string
+    {
+        return 'users';
+    }
+
+    public function handle(ParsedCommand $command, ContextInterface $context): CommandResult
+    {
+        $action = $command->getArgument(0, 'list');
+
+        return match ($action) {
+            'list' => $this->listUsers($command),
+            'show' => $this->showUser($command),
+            'count' => CommandResult::success(['count' => $this->users->count()]),
+            default => CommandResult::failure(
+                sprintf("Unknown action '%s'. Use: list, show, count", $action)
+            ),
+        };
+    }
+
+    private function listUsers(ParsedCommand $command): CommandResult
+    {
+        $limit = (int) $command->getOption('limit', 50);
+        $users = $this->users->findAll($limit);
+
+        return CommandResult::success($users, sprintf('Found %d users', count($users)));
+    }
+
+    private function showUser(ParsedCommand $command): CommandResult
+    {
+        $userId = $command->getArgument(1);
+
+        if ($userId === null) {
+            return CommandResult::failure('Usage: users show <user_id>');
+        }
+
+        $user = $this->users->find((int) $userId);
+
+        if ($user === null) {
+            return CommandResult::failure(sprintf("User %s not found", $userId));
+        }
+
+        return CommandResult::success($user);
+    }
+
+    public function getDescription(): string
+    {
+        return 'Manage system users';
+    }
+
+    public function getUsage(): array
+    {
+        return [
+            'users'              => 'List all users',
+            'users list --limit=10' => 'List with limit',
+            'users show <id>'    => 'Show user details',
+            'users count'        => 'Count total users',
+        ];
+    }
+}
+```
+
+### Metadata and Timing Pattern
+
+Include execution metadata for observability:
+
+```php
+public function handle(ParsedCommand $command, ContextInterface $context): CommandResult
+{
+    $startTime = microtime(true);
+
+    try {
+        $data = $this->performExpensiveOperation();
+        $duration = microtime(true) - $startTime;
+
+        return CommandResult::success($data, null, [
+            'duration_ms' => round($duration * 1000, 2),
+            'record_count' => count($data),
+            'cached' => false,
+        ]);
+    } catch (\Throwable $e) {
+        return CommandResult::fromException($e, [
+            'duration_ms' => round((microtime(true) - $startTime) * 1000, 2),
+        ]);
+    }
+}
+```
+
+---
+
 ## Hyperf Integration
 
 ```
@@ -558,6 +859,535 @@ return [
 │   $streamingShell->run();                                                    │
 │                                                                               │
 └──────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Message System
+
+The message system provides typed message handling for streaming mode.
+
+### Message Class
+
+Represents an incoming message from a streaming transport.
+
+**Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `$type` | `string` | Message type (data, system, error, info) |
+| `$payload` | `mixed` | Message content |
+| `$source` | `string` | Message origin (e.g., "mqtt:publish") |
+| `$timestamp` | `DateTimeImmutable` | When the message was created |
+| `$metadata` | `array<string, mixed>` | Additional context |
+
+**Factory Methods:**
+
+```php
+use NashGao\InteractiveShell\Message\Message;
+
+// Data message (e.g., received MQTT message)
+$message = Message::data(
+    payload: ['temperature' => 25.5, 'humidity' => 60],
+    source: 'mqtt:sensors/room1',
+    metadata: ['topic' => 'sensors/room1', 'qos' => 1]
+);
+
+// System message (e.g., connection status)
+$message = Message::system(
+    message: 'Connected to broker',
+    metadata: ['broker' => 'localhost:1883']
+);
+
+// Error message
+$message = Message::error(
+    error: 'Connection timeout',
+    metadata: ['retry_count' => 3]
+);
+
+// Deserialize from array
+$message = Message::fromArray([
+    'type' => 'data',
+    'payload' => ['value' => 42],
+    'source' => 'sensor',
+    'timestamp' => '2024-01-15T10:30:00+00:00',
+    'metadata' => ['topic' => 'readings'],
+]);
+```
+
+### FilterExpression (Client-Side Filtering)
+
+Filter incoming messages by type, source, or topic using glob patterns.
+
+```php
+use NashGao\InteractiveShell\Message\FilterExpression;
+use NashGao\InteractiveShell\Message\Message;
+
+// Parse filter string
+$filter = FilterExpression::parse('type:data source:mqtt/*');
+
+// Check if message matches
+$message = Message::data(['temp' => 25], 'mqtt/sensors');
+if ($filter->matches($message)) {
+    // Process matching message
+}
+
+// Build filter programmatically
+$filter = new FilterExpression();
+$filter->addFilter('type', 'data')
+       ->addFilter('source', 'sensors/*');
+
+// Check filter state
+$filter->hasFilters();    // true
+$filter->toString();      // "type:data source:sensors/*"
+
+// Clear filters
+$filter->clear();
+```
+
+**Supported filter fields:**
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| `type` | Message type | `type:data`, `type:error` |
+| `source` | Message source | `source:mqtt/*`, `source:system` |
+| `topic` | Topic from metadata | `topic:sensors/*` |
+| `channel` | Channel from metadata | `channel:alerts` |
+
+### MessageFormatter (Terminal Display)
+
+Format messages for terminal output with optional color support.
+
+```php
+use NashGao\InteractiveShell\Message\MessageFormatter;
+use NashGao\InteractiveShell\Message\Message;
+
+$formatter = new MessageFormatter();
+
+// Configure formatting options
+$formatter->setColorEnabled(true)
+          ->setShowTimestamp(true)
+          ->setShowSource(true);
+
+// Format a message
+$message = Message::data(['temp' => 25.5], 'mqtt:sensors/temp');
+echo $formatter->format($message);
+// Output: [10:30:00.456] [DATA] <mqtt:sensors/temp> {"temp":25.5}
+
+// Compact format for high-volume streams
+echo $formatter->formatCompact($message);
+// Output: [10:30:00] D {"temp":25.5}
+```
+
+**Color codes by message type:**
+
+| Type | Color | Indicator |
+|------|-------|-----------|
+| `data` | Green | `[DATA]` |
+| `system` | Blue | `[SYS]` |
+| `error` | Red | `[ERR]` |
+| `info` | Cyan | `[INFO]` |
+
+---
+
+## State Management
+
+The shell maintains session state, command history, and aliases.
+
+### ShellState
+
+Manages shell session state and multi-line input buffering.
+
+```php
+use NashGao\InteractiveShell\State\ShellState;
+
+// Create with default session file (~/.interactive_shell_session)
+$state = new ShellState();
+
+// Or specify custom session file
+$state = new ShellState('/tmp/my-shell-session');
+```
+
+**Multi-line Input Handling:**
+
+Lines ending with `\` are buffered until a complete command is entered:
+
+```php
+// Process user input
+$result = $state->processInput('SELECT * FROM users \\');
+// Returns: null (incomplete, waiting for more input)
+
+$result = $state->processInput('WHERE active = 1');
+// Returns: "SELECT * FROM users WHERE active = 1"
+
+// Check multi-line state
+$state->isInMultiLine();           // true while buffering
+$state->getContinuationPrompt();   // "...> "
+$state->resetMultiLine();          // Clear buffer
+```
+
+**Session Persistence:**
+
+```php
+// Get/set session values
+$state->set('default_format', 'json');
+$format = $state->get('default_format', 'table');
+
+// Record command execution (for metrics)
+$state->recordCommand();
+
+// Get session metrics
+$metrics = $state->getSessionMetrics();
+// [
+//     'session_start' => '2024-01-15T10:00:00+00:00',
+//     'session_duration' => 'PT1H30M45S',
+//     'commands_executed' => 42,
+//     'last_command_time' => '2024-01-15T11:30:00+00:00',
+//     'total_commands_ever' => 1250,
+//     'total_session_duration' => 86400,
+// ]
+
+// Save session (persists total counts)
+$state->saveSession();
+```
+
+### HistoryManager
+
+Manages command history with persistence and readline integration.
+
+```php
+use NashGao\InteractiveShell\State\HistoryManager;
+
+// Create with defaults (1000 entries, ~/.interactive_shell_history)
+$history = new HistoryManager();
+
+// Or customize
+$history = new HistoryManager(
+    maxEntries: 500,
+    historyFile: '/tmp/my-history'
+);
+```
+
+**Key Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `add(string $command)` | Add command (skips duplicates of last entry) |
+| `previous(): ?string` | Navigate to previous command |
+| `next(): ?string` | Navigate to next command |
+| `getLast(): ?string` | Get most recent command |
+| `getHistory(): array` | Get all history entries |
+| `clear()` | Clear in-memory history |
+| `load()` | Load from file |
+| `save()` | Persist to file (with locking) |
+
+```php
+// Add commands
+$history->add('users list');
+$history->add('users show 1');
+
+// Navigate history
+$prev = $history->previous();  // "users show 1"
+$prev = $history->previous();  // "users list"
+$next = $history->next();      // "users show 1"
+
+// Persist on shell exit
+$history->save();
+```
+
+### AliasManager
+
+Manages command aliases with built-in command protection.
+
+```php
+use NashGao\InteractiveShell\Command\AliasManager;
+
+// Create with optional defaults
+$aliases = new AliasManager([
+    'll' => 'users list --format=table',
+    'jq' => 'config --format=json',
+]);
+```
+
+**Key Methods:**
+
+| Method | Description |
+|--------|-------------|
+| `setAlias(string $alias, string $command)` | Create alias (throws if conflicts with built-in) |
+| `expand(string $input): string` | Expand aliases in input |
+| `removeAlias(string $alias): bool` | Delete alias |
+| `hasAlias(string $alias): bool` | Check if alias exists |
+| `getAliases(): array` | Get all aliases |
+| `reset()` | Restore to defaults |
+
+**Protected Commands:**
+
+These cannot be aliased: `help`, `exit`, `quit`, `status`, `clear`, `connect`
+
+```php
+// Set alias
+$aliases->setAlias('ll', 'users list --verbose');
+
+// Expand input
+$expanded = $aliases->expand('ll --limit=10');
+// Returns: "users list --verbose --limit=10"
+
+// Protected command throws exception
+$aliases->setAlias('help', 'something');
+// Throws: InvalidArgumentException
+```
+
+---
+
+## Non-Hyperf Integration
+
+This library can be used with any framework or standalone. Here's how to integrate without Hyperf.
+
+### Implementing Custom Context
+
+Create a context adapter for your framework:
+
+```php
+<?php
+
+use NashGao\InteractiveShell\Server\ContextInterface;
+use Psr\Container\ContainerInterface;
+
+// Laravel Example
+final class LaravelContext implements ContextInterface
+{
+    public function __construct(
+        private readonly \Illuminate\Contracts\Container\Container $app
+    ) {}
+
+    public function getContainer(): ContainerInterface
+    {
+        // Laravel's container implements PSR-11
+        return $this->app;
+    }
+
+    public function get(string $key, mixed $default = null): mixed
+    {
+        return config($key, $default);
+    }
+
+    public function has(string $key): bool
+    {
+        return config()->has($key);
+    }
+
+    public function getConfig(): array
+    {
+        return config()->all();
+    }
+}
+
+// Symfony Example
+final class SymfonyContext implements ContextInterface
+{
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly array $config
+    ) {}
+
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
+    }
+
+    public function get(string $key, mixed $default = null): mixed
+    {
+        $keys = explode('.', $key);
+        $value = $this->config;
+
+        foreach ($keys as $k) {
+            if (!is_array($value) || !array_key_exists($k, $value)) {
+                return $default;
+            }
+            $value = $value[$k];
+        }
+
+        return $value;
+    }
+
+    public function has(string $key): bool
+    {
+        return $this->get($key, $this) !== $this;
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+}
+```
+
+### Array-Based Context (Standalone)
+
+For simple standalone usage:
+
+```php
+<?php
+
+use NashGao\InteractiveShell\Server\ContextInterface;
+use Psr\Container\ContainerInterface;
+
+final class ArrayContext implements ContextInterface
+{
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly array $config = []
+    ) {}
+
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
+    }
+
+    public function get(string $key, mixed $default = null): mixed
+    {
+        $keys = explode('.', $key);
+        $value = $this->config;
+
+        foreach ($keys as $k) {
+            if (!is_array($value) || !array_key_exists($k, $value)) {
+                return $default;
+            }
+            $value = $value[$k];
+        }
+
+        return $value;
+    }
+
+    public function has(string $key): bool
+    {
+        return $this->get($key, $this) !== $this;
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+}
+```
+
+### Standalone Server Setup
+
+Run a shell server without any framework:
+
+```php
+<?php
+
+use NashGao\InteractiveShell\Server\SocketServer;
+use NashGao\InteractiveShell\Server\Handler\CommandRegistry;
+use NashGao\InteractiveShell\Server\Handler\BuiltIn\PingHandler;
+use NashGao\InteractiveShell\Server\Handler\BuiltIn\HelpHandler;
+
+// Simple PSR-11 container (or use any container library)
+$container = new class implements \Psr\Container\ContainerInterface {
+    private array $services = [];
+
+    public function set(string $id, object $service): void
+    {
+        $this->services[$id] = $service;
+    }
+
+    public function get(string $id): mixed
+    {
+        return $this->services[$id] ?? throw new \Exception("Service not found: {$id}");
+    }
+
+    public function has(string $id): bool
+    {
+        return isset($this->services[$id]);
+    }
+};
+
+// Create context with configuration
+$context = new ArrayContext($container, [
+    'app' => [
+        'name' => 'My CLI Application',
+        'version' => '1.0.0',
+        'debug' => true,
+    ],
+    'database' => [
+        'host' => 'localhost',
+        'port' => 3306,
+    ],
+]);
+
+// Set up command registry
+$registry = new CommandRegistry($context);
+
+// Register built-in handlers
+$registry->register(new PingHandler());
+$registry->register(new HelpHandler($registry));
+
+// Register custom handlers
+$registry->register(new MyCustomHandler());
+$registry->register(new AnotherHandler($container->get(SomeService::class)));
+
+// Create and start server
+$server = new SocketServer(
+    socketPath: '/var/run/my-shell.sock',
+    registry: $registry,
+    context: $context
+);
+
+echo "Starting shell server on /var/run/my-shell.sock\n";
+$server->start();
+```
+
+### Client Connection
+
+Connect to the standalone server:
+
+```php
+<?php
+
+use NashGao\InteractiveShell\Shell;
+use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+
+$transport = new UnixSocketTransport('/var/run/my-shell.sock');
+$shell = new Shell($transport, 'myapp> ');
+$shell->run();
+```
+
+### HTTP Server (Without Swoole)
+
+For environments without Swoole, use HTTP transport:
+
+```php
+<?php
+// http-server.php - Run with: php -S localhost:9501 http-server.php
+
+use NashGao\InteractiveShell\Parser\ShellParser;
+use NashGao\InteractiveShell\Server\Handler\CommandRegistry;
+
+$context = new ArrayContext($container, $config);
+$registry = new CommandRegistry($context);
+$registry->register(new PingHandler());
+// ... register handlers
+
+// Handle incoming requests
+$input = file_get_contents('php://input');
+$data = json_decode($input, true);
+
+if ($data === null) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Invalid JSON']);
+    exit;
+}
+
+$parser = new ShellParser();
+$command = isset($data['raw'])
+    ? $parser->parse($data['raw'])
+    : new ParsedCommand($data['command'] ?? '', $data['arguments'] ?? [], $data['options'] ?? [], '', false);
+
+$result = $registry->execute($command);
+
+header('Content-Type: application/json');
+echo json_encode($result->toArray());
 ```
 
 ---
