@@ -27,6 +27,8 @@ final class BuiltInCommands
         'history' => 'handleHistory',
         'alias' => 'handleAlias',
         'unalias' => 'handleUnalias',
+        'reconnect' => 'handleReconnect',
+        'ping' => 'handlePing',
     ];
 
     private bool $shouldExit = false;
@@ -73,6 +75,8 @@ Built-in commands:
   history           Show command history
   alias [name=cmd]  Show or set aliases
   unalias <name>    Remove an alias
+  reconnect         Reconnect to the server
+  ping              Check if the server is reachable
 
 Navigation:
   Use up/down arrows to navigate command history
@@ -211,5 +215,41 @@ HELP;
         }
 
         return CommandResult::failure("Alias not found: {$name}");
+    }
+
+    private function handleReconnect(ParsedCommand $parsed, OutputInterface $output): CommandResult
+    {
+        if ($this->transport === null) {
+            return CommandResult::failure('No transport configured');
+        }
+
+        $output->writeln('Reconnecting...');
+
+        try {
+            $this->transport->disconnect();
+            $this->transport->connect();
+            $output->writeln('Reconnected to ' . $this->transport->getEndpoint());
+            return CommandResult::success(message: 'Reconnected');
+        } catch (\Throwable $e) {
+            return CommandResult::failure('Reconnect failed: ' . $e->getMessage());
+        }
+    }
+
+    private function handlePing(ParsedCommand $parsed, OutputInterface $output): CommandResult
+    {
+        if ($this->transport === null) {
+            return CommandResult::failure('No transport configured');
+        }
+
+        $reachable = $this->transport->ping();
+        $endpoint = $this->transport->getEndpoint();
+
+        if ($reachable) {
+            $output->writeln("Server {$endpoint} is reachable");
+            return CommandResult::success(message: 'Server is reachable');
+        }
+
+        $output->writeln("Server {$endpoint} is not reachable");
+        return CommandResult::failure('Server is not reachable');
     }
 }

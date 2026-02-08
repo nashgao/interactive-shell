@@ -99,8 +99,12 @@ final class SocketServer implements ServerInterface
             while ($this->running) {
                 $data = $conn->recv(timeout: 30.0);
 
-                if ($data === false || $data === '') {
-                    break; // Client disconnected or timeout
+                if ($data === '') {
+                    break; // Client genuinely disconnected
+                }
+
+                if ($data === false) {
+                    continue; // Timeout — keep waiting, re-check $this->running
                 }
 
                 $response = $this->processRequest($data);
@@ -133,6 +137,9 @@ final class SocketServer implements ServerInterface
 
         // Try JSON protocol first
         $decoded = json_decode($data, true);
+        if (is_array($decoded) && ($decoded['type'] ?? '') === 'ping') {
+            return CommandResult::success(['pong' => true, 'time' => date('c')]);
+        }
         if (is_array($decoded) && isset($decoded['command'])) {
             return $this->processJsonRequest($decoded);
         }
