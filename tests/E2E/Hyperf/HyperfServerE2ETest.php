@@ -124,8 +124,6 @@ final class HyperfServerE2ETest extends TestCase
                 $transport = new UnixSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
 
-                // Consume welcome message
-                $transport->receive(1.0);
 
                 // Execute ping command
                 $parsed = new ParsedCommand('ping', [], [], 'ping', false);
@@ -174,7 +172,6 @@ final class HyperfServerE2ETest extends TestCase
 
                 $transport = new UnixSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
-                $transport->receive(1.0);
 
                 // When: Consumer requests config
                 $parsed = new ParsedCommand('config', [], [], 'config', false);
@@ -221,7 +218,6 @@ final class HyperfServerE2ETest extends TestCase
 
                 $transport = new UnixSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
-                $transport->receive(1.0);
 
                 // When: Consumer requests command list
                 $parsed = new ParsedCommand('commands', [], [], 'commands', false);
@@ -274,7 +270,6 @@ final class HyperfServerE2ETest extends TestCase
 
                 $transport = new UnixSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
-                $transport->receive(1.0);
 
                 // When: Consumer requests help for a command
                 $parsed = new ParsedCommand('help', ['ping'], [], 'help ping', false);
@@ -325,9 +320,6 @@ final class HyperfServerE2ETest extends TestCase
 
                 $transport1->connect();
                 $transport2->connect();
-
-                $transport1->receive(1.0);
-                $transport2->receive(1.0);
 
                 $parsed = new ParsedCommand('ping', [], [], 'ping', false);
 

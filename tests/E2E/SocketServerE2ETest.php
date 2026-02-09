@@ -149,10 +149,7 @@ final class SocketServerE2ETest extends TestCase
                 $transport = new UnixSocketTransport($this->socketPath, timeout: 5.0);
                 $transport->connect();
 
-                // Read welcome message (server sends it on connect)
-                // The transport receive() handles this
-                $welcome = $transport->receive(1.0);
-                self::assertNotNull($welcome);
+                // Welcome message is now consumed by connect() — buffer is clean
 
                 // Execute echo command via direct transport
                 $parsed = new \NashGao\InteractiveShell\Parser\ParsedCommand(
@@ -227,8 +224,7 @@ final class SocketServerE2ETest extends TestCase
                 $transport = new UnixSocketTransport($this->socketPath, timeout: 5.0);
                 $transport->connect();
 
-                // Consume welcome
-                $transport->receive(1.0);
+                // Welcome message is now consumed by connect() — buffer is clean
 
                 // Multiple commands
                 for ($i = 1; $i <= 3; ++$i) {

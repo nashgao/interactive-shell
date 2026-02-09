@@ -55,6 +55,9 @@ final class SwooleSocketTransport implements StreamingTransportInterface
         }
 
         $this->connected = true;
+
+        // Server sends an unsolicited welcome message on connect — drain it
+        $this->readLine(2.0);
     }
 
     public function disconnect(): void

@@ -66,6 +66,20 @@ final class UnixSocketTransport implements StreamingTransportInterface
 
         $this->socket = $socket;
         $this->connected = true;
+
+        // Server sends an unsolicited welcome message on connect — drain it.
+        // Temporarily set SO_RCVTIMEO so socket_read won't block indefinitely
+        // when the caller didn't configure a timeout (default timeout=0).
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, ['sec' => 2, 'usec' => 0]);
+        $this->readLine(2.0);
+
+        // Restore the caller's original timeout setting
+        $timeoutSec = (int) $this->timeout;
+        $timeoutUsec = (int) (($this->timeout - $timeoutSec) * 1000000);
+        socket_set_option($socket, SOL_SOCKET, SO_RCVTIMEO, [
+            'sec' => $timeoutSec,
+            'usec' => $timeoutUsec,
+        ]);
     }
 
     public function disconnect(): void
