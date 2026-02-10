@@ -12,7 +12,7 @@ Interactive shell library with pluggable transports and streaming support. Build
 ## Features
 
 - **Standard Shell (REPL)**: Traditional request/response interactive shell with readline support
-- **Streaming Shell**: Bidirectional streaming for real-time message processing (with Swoole or polling fallback)
+- **Streaming Shell**: Bidirectional streaming for real-time message processing (Swoole coroutines)
 - **Pluggable Transports**: HTTP, Unix Socket, or implement your own via `TransportInterface`
 - **Multiple Output Formats**: Table (ASCII), JSON, CSV, Vertical (MySQL `\G` style)
 - **Advanced Command Parsing**: Quote handling, escape sequences, options (`--format=json`), and `\G` terminator
@@ -23,12 +23,12 @@ Interactive shell library with pluggable transports and streaming support. Build
 ## Requirements
 
 - PHP 8.1 or higher
+- ext-swoole (coroutine-based async I/O)
 - Symfony Console ^6.0|^7.0
 - Guzzle HTTP ^7.0
 
 ### Optional Extensions
 
-- `ext-swoole`: Required for StreamingShell with coroutine-based I/O (recommended for production streaming)
 - `ext-readline`: Recommended for better input handling and history navigation
 
 ## Installation
@@ -105,12 +105,12 @@ Goodbye!
 <?php
 
 use NashGao\InteractiveShell\StreamingShell;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-// Create streaming transport (Unix socket example)
-$transport = new UnixSocketTransport(
+// Create streaming transport (Swoole socket example)
+$transport = new SwooleSocketTransport(
     socketPath: '/var/run/mqtt-debug.sock',
     timeout: 30.0
 );
@@ -350,15 +350,14 @@ $transport = new HttpTransport(
 }
 ```
 
-#### Unix Socket Transport
+#### Swoole Socket Transport
 
 ```php
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 
-$transport = new UnixSocketTransport(
+$transport = new SwooleSocketTransport(
     socketPath: '/var/run/myapp.sock',
     timeout: 30.0,                    // Socket timeout
-    bufferSize: 8192                  // Read buffer size
 );
 ```
 
@@ -577,9 +576,9 @@ Once the Hyperf server is running, connect using a client:
 
 ```php
 use NashGao\InteractiveShell\Shell;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 
-$transport = new UnixSocketTransport(
+$transport = new SwooleSocketTransport(
     socketPath: '/var/run/hyperf-shell.sock',
     timeout: 30.0
 );
@@ -619,7 +618,7 @@ When running in Hyperf, these additional commands are available:
 | Class | Description |
 |-------|-------------|
 | `HttpTransport` | HTTP/HTTPS transport using Guzzle |
-| `UnixSocketTransport` | Unix domain socket transport (with streaming support) |
+| `SwooleSocketTransport` | Swoole coroutine-based Unix socket transport (with streaming support) |
 | `TransportInterface` | Interface for custom transport implementations |
 | `StreamingTransportInterface` | Extended interface for streaming transports |
 
@@ -702,16 +701,7 @@ The shell automatically saves:
 
 ### Streaming Mode Performance
 
-| Mode | Description | Performance | Requirements |
-|------|-------------|-------------|--------------|
-| **Swoole** | Coroutine-based async I/O | Excellent (true concurrency) | `ext-swoole` |
-| **Polling** | Stream select polling | Good (periodic checking) | None |
-
-**Recommendation**: Install Swoole extension for production streaming workloads:
-
-```bash
-pecl install swoole
-```
+The streaming shell uses Swoole coroutines for true concurrent I/O — message receiving, display, and user input each run in their own coroutine.
 
 ### Output Format Performance
 

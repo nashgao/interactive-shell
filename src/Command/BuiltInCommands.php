@@ -103,11 +103,8 @@ HELP;
         return CommandResult::success(message: 'Exiting');
     }
 
-    private function handleStatus(ParsedCommand $parsed, OutputInterface $output): CommandResult
+    private function handleStatus(ParsedCommand $_parsed, OutputInterface $output): CommandResult
     {
-        // Prevent unused parameter warning
-        unset($parsed);
-
         $metrics = $this->state->getSessionMetrics();
 
         $sessionStart = $metrics['session_start'] ?? '';
@@ -128,7 +125,7 @@ HELP;
         return CommandResult::success($metrics);
     }
 
-    private function handleClear(ParsedCommand $parsed, OutputInterface $output): CommandResult
+    private function handleClear(ParsedCommand $_parsed, OutputInterface $output): CommandResult
     {
         $output->write("\033[2J\033[H");
         return CommandResult::success(message: 'Screen cleared');

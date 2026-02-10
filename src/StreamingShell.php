@@ -47,8 +47,11 @@ final class StreamingShell implements ShellInterface
     private FilterExpression $filter;
     private bool $running = false;
     private bool $paused = false;
+    private ?\Swoole\Atomic $runningAtomic = null;
+    private ?\Swoole\Atomic $pausedAtomic = null;
     private string $prompt;
     private int $messageCount = 0;
+    private string $inputBuffer = '';
 
     /**
      * @param StreamingTransportInterface $transport Streaming transport
@@ -80,7 +83,7 @@ final class StreamingShell implements ShellInterface
 
     public function run(InputInterface $input, OutputInterface $output): int
     {
-        $this->running = true;
+        $this->setRunning(true);
 
         // Connect
         try {
@@ -91,13 +94,7 @@ final class StreamingShell implements ShellInterface
             return 1;
         }
 
-        // Check for Swoole
-        if (extension_loaded('swoole')) {
-            return $this->runWithSwoole($input, $output);
-        }
-
-        // Fallback to polling mode
-        return $this->runPolling($input, $output);
+        return $this->runWithSwoole($input, $output);
     }
 
     /**
@@ -106,112 +103,94 @@ final class StreamingShell implements ShellInterface
      * Note: This method requires ext-swoole. The Swoole classes and functions
      * are only available when the extension is loaded.
      */
-    private function runWithSwoole(InputInterface $input, OutputInterface $output): int
+    private function runWithSwoole(InputInterface $_input, OutputInterface $output): int
     {
-        // Prevent unused parameter warning
-        unset($input);
-
         $output->writeln('Streaming Shell (Swoole mode)');
         $output->writeln('Commands: filter <pattern>, pause, resume, clear, exit');
         $output->writeln('');
 
         // Start streaming
-        $this->transport->startStreaming();
+        try {
+            $this->transport->startStreaming();
+        } catch (\Throwable $e) {
+            $output->writeln("<error>Failed to start streaming: {$e->getMessage()}</error>");
+            $this->transport->disconnect();
+            return 1;
+        }
 
-        // Swoole coroutine runtime - only available when ext-swoole is loaded
-        // @phpstan-ignore-next-line (Swoole function only available when ext-swoole is loaded)
+        // Initialize atomic flags for thread-safe state across coroutines
+        $this->runningAtomic = new \Swoole\Atomic(1);
+        $this->pausedAtomic = new \Swoole\Atomic(0);
+
         \Swoole\Coroutine\run(function () use ($output): void {
             $channel = new \Swoole\Coroutine\Channel($this->channelBufferSize);
 
-            // Coroutine 1: Message receiver
-            go(function () use ($channel): void {
-                while ($this->running) {
-                    $message = $this->transport->receive(0.1);
-                    if ($message !== null && !$this->paused) {
-                        $channel->push($message);
+            // Coroutine 1: Message receiver — always push (never drop while paused)
+            go(function () use ($channel, $output): void {
+                try {
+                    while ($this->isStillRunning()) {
+                        $message = $this->transport->receive(0.1);
+                        if ($message !== null) {
+                            $channel->push($message);
+                        }
+                        \Swoole\Coroutine::sleep(0.01);
                     }
-                    \Swoole\Coroutine::sleep(0.01);
+                } catch (\Throwable $e) {
+                    $this->setRunning(false);
+                    $output->writeln("<error>Receiver error: {$e->getMessage()}</error>");
                 }
             });
 
-            // Coroutine 2: Message display
+            // Coroutine 2: Message display — skip pop entirely when paused
             go(function () use ($channel, $output): void {
-                while ($this->running) {
-                    $message = $channel->pop(0.1);
-                    if ($message instanceof Message) {
-                        if ($this->filter->matches($message)) {
+                try {
+                    while ($this->isStillRunning()) {
+                        if ($this->isPaused()) {
+                            \Swoole\Coroutine::sleep(0.1);
+                            continue;
+                        }
+                        $message = $channel->pop(0.1);
+                        if ($message instanceof Message && $this->filter->matches($message)) {
                             $formatted = $this->messageFormatter->format($message);
                             $output->writeln($formatted);
                             ++$this->messageCount;
                         }
                     }
+                } catch (\Throwable $e) {
+                    $this->setRunning(false);
+                    $output->writeln("<error>Display error: {$e->getMessage()}</error>");
                 }
             });
 
             // Coroutine 3: Input handler
             go(function () use ($output): void {
-                while ($this->running) {
-                    $line = $this->readLineNonBlocking($this->prompt);
-                    if ($line !== null) {
-                        $this->handleInput($line, $output);
+                try {
+                    while ($this->isStillRunning()) {
+                        $line = $this->readLineNonBlocking($this->prompt);
+                        if ($line !== null) {
+                            $this->handleInput($line, $output);
+                        }
+                        \Swoole\Coroutine::sleep(0.01);
                     }
-                    \Swoole\Coroutine::sleep(0.01);
+                } catch (\Throwable $e) {
+                    $this->setRunning(false);
+                    $output->writeln("<error>Input error: {$e->getMessage()}</error>");
                 }
             });
 
             // Wait for exit
-            while ($this->running) {
-                \Swoole\Coroutine::sleep(0.1);
+            try {
+                while ($this->isStillRunning()) {
+                    \Swoole\Coroutine::sleep(0.1);
+                }
+            } catch (\Throwable $e) {
+                $this->setRunning(false);
+                $output->writeln("<error>Shell error: {$e->getMessage()}</error>");
             }
         });
 
-        $this->cleanup($output);
-        return 0;
-    }
-
-    /**
-     * Run in polling mode (without Swoole).
-     */
-    private function runPolling(InputInterface $input, OutputInterface $output): int
-    {
-        // Prevent unused parameter warning
-        unset($input);
-
-        $output->writeln('Streaming Shell (polling mode - install Swoole for better performance)');
-        $output->writeln('Commands: filter <pattern>, pause, resume, clear, exit');
-        $output->writeln('');
-
-        // Start streaming
-        $this->transport->startStreaming();
-
-        // Set non-blocking stdin
-        stream_set_blocking(STDIN, false);
-
-        while ($this->running) {
-            // Check for messages
-            if (!$this->paused) {
-                $message = $this->transport->receive(0);
-                if ($message !== null && $this->filter->matches($message)) {
-                    $formatted = $this->messageFormatter->format($message);
-                    $output->writeln($formatted);
-                    ++$this->messageCount;
-                }
-            }
-
-            // Check for input
-            $line = fgets(STDIN);
-            if ($line !== false) {
-                $line = rtrim($line, "\r\n");
-                $this->handleInput($line, $output);
-            }
-
-            // Small delay to prevent CPU spinning
-            usleep(10000); // 10ms
-        }
-
-        // Restore blocking
-        stream_set_blocking(STDIN, true);
-
+        $this->runningAtomic = null;
+        $this->pausedAtomic = null;
         $this->cleanup($output);
         return 0;
     }
@@ -239,32 +218,32 @@ final class StreamingShell implements ShellInterface
                 return;
 
             case 'pause':
-                $this->paused = true;
+                $this->setPaused(true);
                 $output->writeln('<info>Streaming paused</info>');
                 return;
 
             case 'resume':
-                $this->paused = false;
+                $this->setPaused(false);
                 $output->writeln('<info>Streaming resumed</info>');
                 return;
 
             case 'stats':
                 $output->writeln(sprintf('Messages received: %d', $this->messageCount));
                 $output->writeln(sprintf('Filter: %s', $this->filter->toString()));
-                $output->writeln(sprintf('Paused: %s', $this->paused ? 'Yes' : 'No'));
+                $output->writeln(sprintf('Paused: %s', $this->isPaused() ? 'Yes' : 'No'));
                 return;
 
             case 'exit':
             case 'quit':
-                $this->running = false;
+                $this->setRunning(false);
                 return;
         }
 
-        // Check built-in commands
-        if ($this->builtIn->isBuiltIn($parsed->command)) {
-            $result = $this->builtIn->execute($parsed, $output);
+        // Check built-in commands (use lowercased $command to match COMMAND_MAP keys)
+        if ($this->builtIn->isBuiltIn($command)) {
+            $this->builtIn->execute($parsed, $output);
             if ($this->builtIn->shouldExit()) {
-                $this->running = false;
+                $this->setRunning(false);
             }
             return;
         }
@@ -320,12 +299,52 @@ final class StreamingShell implements ShellInterface
 
     public function isRunning(): bool
     {
-        return $this->running;
+        return $this->isStillRunning();
     }
 
     public function stop(): void
     {
-        $this->running = false;
+        $this->setRunning(false);
+    }
+
+    /**
+     * Thread-safe running check (uses Swoole\Atomic when in coroutine mode).
+     */
+    private function isStillRunning(): bool
+    {
+        if ($this->runningAtomic !== null) {
+            return $this->runningAtomic->get() === 1;
+        }
+        return $this->running;
+    }
+
+    /**
+     * Thread-safe running setter (uses Swoole\Atomic when in coroutine mode).
+     */
+    private function setRunning(bool $running): void
+    {
+        $this->running = $running;
+        $this->runningAtomic?->set($running ? 1 : 0);
+    }
+
+    /**
+     * Thread-safe pause check (uses Swoole\Atomic when in coroutine mode).
+     */
+    private function isPaused(): bool
+    {
+        if ($this->pausedAtomic !== null) {
+            return $this->pausedAtomic->get() === 1;
+        }
+        return $this->paused;
+    }
+
+    /**
+     * Thread-safe pause setter (uses Swoole\Atomic when in coroutine mode).
+     */
+    private function setPaused(bool $paused): void
+    {
+        $this->paused = $paused;
+        $this->pausedAtomic?->set($paused ? 1 : 0);
     }
 
     /**
@@ -357,11 +376,6 @@ final class StreamingShell implements ShellInterface
      */
     private function readLineNonBlocking(string $prompt): ?string
     {
-        static $buffer = '';
-
-        // This requires a TTY for proper operation
-        // In Swoole, we'd use Swoole\Coroutine\System::fgets() or similar
-
         $read = [STDIN];
         $write = $except = [];
         $changed = @stream_select($read, $write, $except, 0, 10000);
@@ -369,11 +383,11 @@ final class StreamingShell implements ShellInterface
         if ($changed > 0) {
             $char = fgetc(STDIN);
             if ($char === false || $char === "\n") {
-                $line = $buffer;
-                $buffer = '';
+                $line = $this->inputBuffer;
+                $this->inputBuffer = '';
                 return $line;
             }
-            $buffer .= $char;
+            $this->inputBuffer .= $char;
         }
 
         return null;

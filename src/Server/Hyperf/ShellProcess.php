@@ -109,11 +109,50 @@ final class ShellProcess extends AbstractProcess
             }
         }
 
+        // Auto-discover annotated handlers (skip already-registered commands)
+        $discoveryEnabled = (bool) $this->config->get('interactive_shell.handler_discovery.enabled', true);
+        if ($discoveryEnabled) {
+            /** @var array<string> $namespacePrefixes */
+            $namespacePrefixes = $this->config->get(
+                'interactive_shell.handler_discovery.namespaces',
+                ['App\\Shell\\']
+            );
+
+            $discovery = new HandlerDiscovery();
+            $discovered = $discovery->discover(
+                $this->getComposerClassMap(),
+                $namespacePrefixes,
+                fn(string $class): ?CommandHandlerInterface => $this->resolveHandler($class),
+            );
+
+            foreach ($discovered as $handler) {
+                if (!$registry->has($handler->getCommand())) {
+                    $registry->register($handler);
+                }
+            }
+        }
+
         // Set HyperfCommandHandler as fallback for unknown commands
         // This allows executing any Hyperf console command from the shell
         $registry->setFallbackHandler(new HyperfCommandHandler());
 
         return $registry;
+    }
+
+    /**
+     * @return array<string, string> class => file path
+     */
+    private function getComposerClassMap(): array
+    {
+        $autoloadFile = (defined('BASE_PATH') ? BASE_PATH : getcwd()) . '/vendor/autoload.php';
+        if (!file_exists($autoloadFile)) {
+            return [];
+        }
+
+        /** @var \Composer\Autoload\ClassLoader $loader */
+        $loader = require $autoloadFile;
+
+        return $loader->getClassMap();
     }
 
     private function resolveHandler(string $class): ?CommandHandlerInterface

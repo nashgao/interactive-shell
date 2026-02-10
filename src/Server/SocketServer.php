@@ -8,7 +8,6 @@ use NashGao\InteractiveShell\Command\CommandResult;
 use NashGao\InteractiveShell\Parser\ParsedCommand;
 use NashGao\InteractiveShell\Parser\ShellParser;
 use NashGao\InteractiveShell\Server\Handler\CommandRegistry;
-use Swoole\Coroutine;
 use Swoole\Coroutine\Server as SwooleServer;
 use Swoole\Coroutine\Server\Connection;
 
@@ -29,12 +28,14 @@ final class SocketServer implements ServerInterface
      * @param CommandRegistry $registry Command handler registry
      * @param ContextInterface $context Framework context
      * @param int $socketPermissions Unix permissions for socket file (default: 0660)
+     * @param int $maxIdleTimeouts Maximum consecutive idle timeouts before closing connection (0 = unlimited)
      */
     public function __construct(
         private readonly string $socketPath,
         private readonly CommandRegistry $registry,
         private readonly ContextInterface $context,
-        private readonly int $socketPermissions = 0660
+        private readonly int $socketPermissions = 0660,
+        private readonly int $maxIdleTimeouts = 0,
     ) {
         $this->parser = new ShellParser();
     }
@@ -75,19 +76,13 @@ final class SocketServer implements ServerInterface
 
     private function createServer(): void
     {
+        // Set umask so the socket file is created with correct permissions
+        $previousUmask = umask(0777 & ~$this->socketPermissions);
         $this->server = new SwooleServer('unix:' . $this->socketPath);
+        umask($previousUmask);
 
         $this->server->handle(function (Connection $conn): void {
             $this->handleConnection($conn);
-        });
-
-        // Set socket permissions after server starts listening
-        Coroutine::create(function (): void {
-            // Small delay to ensure socket file exists
-            Coroutine::sleep(0.01);
-            if (file_exists($this->socketPath)) {
-                chmod($this->socketPath, $this->socketPermissions);
-            }
         });
     }
 
@@ -96,6 +91,7 @@ final class SocketServer implements ServerInterface
         try {
             $this->sendWelcome($conn);
 
+            $idleCount = 0;
             while ($this->running) {
                 $data = $conn->recv(timeout: 30.0);
 
@@ -104,9 +100,14 @@ final class SocketServer implements ServerInterface
                 }
 
                 if ($data === false) {
+                    $idleCount++;
+                    if ($this->maxIdleTimeouts > 0 && $idleCount >= $this->maxIdleTimeouts) {
+                        break;
+                    }
                     continue; // Timeout — keep waiting, re-check $this->running
                 }
 
+                $idleCount = 0;
                 $response = $this->processRequest($data);
                 $this->sendResponse($conn, $response);
             }

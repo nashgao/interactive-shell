@@ -74,4 +74,23 @@ return [
     |
     */
     'handlers' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Handler Auto-Discovery
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, classes annotated with #[AsShellHandler] will be
+    | automatically discovered and registered. Only classes within the
+    | configured namespace prefixes are scanned (via Composer classmap).
+    |
+    | Handlers registered via the 'handlers' array above take priority
+    | over auto-discovered ones. If a command name is already registered,
+    | the discovered handler is skipped.
+    |
+    */
+    'handler_discovery' => [
+        'enabled' => true,
+        'namespaces' => ['App\\Shell\\'],
+    ],
 ];

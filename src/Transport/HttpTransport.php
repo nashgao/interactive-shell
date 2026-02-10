@@ -60,7 +60,7 @@ final class HttpTransport implements TransportInterface
 
     public function isConnected(): bool
     {
-        return $this->connected && $this->ping();
+        return $this->connected;
     }
 
     public function send(ParsedCommand $command): CommandResult

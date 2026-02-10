@@ -11,25 +11,20 @@ use Swoole\Coroutine;
  * Factory for creating transport instances with automatic context detection.
  *
  * Selects the appropriate transport implementation based on the execution
- * context (Swoole coroutine vs. standard PHP).
+ * context (e.g., Swoole coroutine for pooled transports).
  */
 final class TransportFactory
 {
     /**
-     * Create a Unix socket transport with automatic Swoole detection.
+     * Create a Unix socket transport.
      *
-     * Returns SwooleSocketTransport when running in a Swoole coroutine context,
-     * otherwise returns UnixSocketTransport.
+     * Returns SwooleSocketTransport for coroutine-aware socket communication.
      */
     public static function unix(
         string $socketPath,
         float $timeout = 0.0,
     ): TransportInterface {
-        if (self::inSwooleCoroutine()) {
-            return new SwooleSocketTransport($socketPath, $timeout);
-        }
-
-        return new UnixSocketTransport($socketPath, $timeout);
+        return new SwooleSocketTransport($socketPath, $timeout);
     }
 
     /**
@@ -54,20 +49,11 @@ final class TransportFactory
 
     /**
      * Create a Swoole socket transport explicitly.
-     *
-     * Use this when you want to ensure Swoole transport is used,
-     * regardless of auto-detection.
-     *
-     * @throws RuntimeException When Swoole extension is not loaded
      */
     public static function swoole(
         string $socketPath,
         float $timeout = 0.0,
     ): SwooleSocketTransport {
-        if (! self::swooleAvailable()) {
-            throw new RuntimeException('Swoole extension is not loaded');
-        }
-
         return new SwooleSocketTransport($socketPath, $timeout);
     }
 
@@ -96,7 +82,7 @@ final class TransportFactory
      */
     public static function swooleAvailable(): bool
     {
-        return extension_loaded('swoole');
+        return true;
     }
 
     /**
@@ -119,10 +105,6 @@ final class TransportFactory
      */
     private static function getRecommendedTransport(): string
     {
-        if (self::inSwooleCoroutine()) {
-            return 'swoole_socket';
-        }
-
-        return 'unix_socket';
+        return 'swoole_socket';
     }
 }

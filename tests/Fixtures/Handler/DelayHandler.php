@@ -33,7 +33,7 @@ use NashGao\InteractiveShell\Server\Handler\CommandHandlerInterface;
  * // $result->data === 'Delayed 0.5s'
  *
  * // Test timeout handling
- * $transport = new UnixSocketTransport($socketPath, timeout: 0.1);
+ * $transport = new SwooleSocketTransport($socketPath, timeout: 0.1);
  * $shell->executeCommand('delay 1');  // Should timeout
  * ```
  *

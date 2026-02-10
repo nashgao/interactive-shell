@@ -7,26 +7,22 @@ namespace NashGao\InteractiveShell\Tests\Unit\Transport;
 use NashGao\InteractiveShell\Transport\HttpTransport;
 use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use NashGao\InteractiveShell\Transport\TransportFactory;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(TransportFactory::class)]
 final class TransportFactoryTest extends TestCase
 {
-    public function testSwooleAvailableReturnsCorrectValue(): void
+    public function testSwooleAvailableReturnsTrue(): void
     {
         $result = TransportFactory::swooleAvailable();
 
-        // Result depends on whether Swoole extension is loaded
-        self::assertIsBool($result);
-        self::assertSame(extension_loaded('swoole'), $result);
+        self::assertTrue($result);
     }
 
     public function testInSwooleCoroutineReturnsFalseOutsideCoroutine(): void
     {
         // Running in standard PHPUnit context (not inside Co\run)
-        // Even if Swoole is available, we're not in a coroutine
         $result = TransportFactory::inSwooleCoroutine();
 
         self::assertFalse($result);
@@ -58,23 +54,21 @@ final class TransportFactoryTest extends TestCase
     {
         $info = TransportFactory::getContextInfo();
 
-        // Outside coroutine context, should recommend unix_socket
-        self::assertSame('unix_socket', $info['recommended_transport']);
+        self::assertSame('swoole_socket', $info['recommended_transport']);
     }
 
-    public function testUnixReturnsUnixSocketTransportOutsideCoroutine(): void
+    public function testUnixReturnsSwooleSocketTransport(): void
     {
-        // Outside coroutine context, should return UnixSocketTransport
         $transport = TransportFactory::unix('/tmp/test.sock', 5.0);
 
-        self::assertInstanceOf(UnixSocketTransport::class, $transport);
+        self::assertInstanceOf(SwooleSocketTransport::class, $transport);
     }
 
     public function testUnixTransportEndpoint(): void
     {
         $transport = TransportFactory::unix('/tmp/test.sock');
 
-        self::assertSame('unix:///tmp/test.sock', $transport->getEndpoint());
+        self::assertSame('swoole+unix:///tmp/test.sock', $transport->getEndpoint());
     }
 
     public function testPooledThrowsOutsideCoroutine(): void
