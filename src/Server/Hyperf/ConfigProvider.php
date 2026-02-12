@@ -27,7 +27,7 @@ final class ConfigProvider
                 [
                     'id' => 'config',
                     'description' => 'Interactive shell configuration file.',
-                    'source' => dirname(__DIR__, 3) . '/config/interactive_shell.php',
+                    'source' => dirname(__DIR__, 3) . '/publish/interactive_shell.php',
                     'destination' => $basePath . '/config/autoload/interactive_shell.php',
                 ],
             ],

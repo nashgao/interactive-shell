@@ -58,16 +58,6 @@ final class TransportFactory
     }
 
     /**
-     * Create an HTTP transport.
-     */
-    public static function http(
-        string $baseUrl,
-        float $timeout = 0.0,
-    ): TransportInterface {
-        return new HttpTransport($baseUrl, $timeout);
-    }
-
-    /**
      * Check if currently running inside a Swoole coroutine.
      */
     public static function inSwooleCoroutine(): bool

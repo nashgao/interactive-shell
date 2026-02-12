@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace NashGao\InteractiveShell\Tests\Unit\Transport;
 
-use NashGao\InteractiveShell\Transport\HttpTransport;
 use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use NashGao\InteractiveShell\Transport\TransportFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -88,19 +87,4 @@ final class TransportFactoryTest extends TestCase
         self::assertSame('swoole+unix:///tmp/test.sock', $transport->getEndpoint());
     }
 
-    public function testHttpReturnsHttpTransport(): void
-    {
-        $transport = TransportFactory::http('http://localhost:9501', 5.0);
-
-        self::assertInstanceOf(HttpTransport::class, $transport);
-        self::assertSame('http://localhost:9501', $transport->getEndpoint());
-    }
-
-    public function testHttpTransportWithDefaults(): void
-    {
-        $transport = TransportFactory::http('https://api.example.com');
-
-        self::assertInstanceOf(HttpTransport::class, $transport);
-        self::assertSame('https://api.example.com', $transport->getEndpoint());
-    }
 }

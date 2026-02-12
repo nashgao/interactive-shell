@@ -53,10 +53,10 @@ A production-grade interactive shell library for PHP applications with MySQL-lik
 │              ▼                         │    │  │   Custom Handlers    │  │  │
 │  ┌───────────────────────────┐         │    │  │  • YourHandler1      │  │  │
 │  │    Transport Layer        │────────▶│    │  │  • YourHandler2      │  │  │
-│  │  ┌──────────┐ ┌─────────┐ │         │    │  │  • ...               │  │  │
-│  │  │   HTTP   │ │  Unix   │ │         │    │  └──────────────────────┘  │  │
-│  │  │Transport │ │ Socket  │ │         │    └────────────────────────────┘  │
-│  │  └──────────┘ └─────────┘ │         │                 │                  │
+│  │  ┌─────────────────────┐   │         │    │  │  • ...               │  │  │
+│  │  │    Unix Socket      │   │         │    │  └──────────────────────┘  │  │
+│  │  │    Transport        │   │         │    └────────────────────────────┘  │
+│  │  └─────────────────────┘   │         │                 │                  │
 │  └───────────────────────────┘         │                 ▼                  │
 │              │                         │    ┌────────────────────────────┐  │
 │              ▼                         │    │     ContextInterface       │  │
@@ -76,7 +76,7 @@ A production-grade interactive shell library for PHP applications with MySQL-lik
 | **Shell** | Standard REPL with readline support |
 | **StreamingShell** | Bidirectional real-time messaging |
 | **ShellParser** | Parses commands, arguments, and options |
-| **Transport** | Pluggable HTTP or Unix socket communication |
+| **Transport** | Pluggable Unix socket communication |
 | **CommandRegistry** | Routes commands to appropriate handlers |
 | **OutputFormatter** | Formats results in multiple styles |
 
@@ -120,10 +120,10 @@ A production-grade interactive shell library for PHP applications with MySQL-lik
 <?php
 
 use InteractiveShell\Shell;
-use InteractiveShell\Transport\HttpTransport;
+use InteractiveShell\Transport\SwooleSocketTransport;
 
 // Create transport
-$transport = new HttpTransport('http://localhost:9501');
+$transport = new SwooleSocketTransport('/var/run/myapp.sock');
 
 // Create and run shell
 $shell = new Shell($transport, 'myapp> ');
@@ -248,40 +248,34 @@ return [
 │                          🔌 TRANSPORT COMPARISON                              │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │                                                                               │
-│   HTTP TRANSPORT                         UNIX SOCKET TRANSPORT               │
-│   ══════════════                         ════════════════════                │
+│   UNIX SOCKET TRANSPORT (Swoole)                                            │
+│   ══════════════════════════════                                            │
 │                                                                               │
-│   ┌────────────────────────┐             ┌────────────────────────┐          │
-│   │                        │             │                        │          │
-│   │  ✓ Cross-machine       │             │  ✓ Fastest local       │          │
-│   │  ✓ Load balancing      │             │  ✓ No network stack    │          │
-│   │  ✓ Auth headers        │             │  ✓ File permissions    │          │
-│   │  ✓ SSL/TLS support     │             │  ✓ Bidirectional       │          │
-│   │  ✓ REST-friendly       │             │  ✓ Streaming mode      │          │
-│   │                        │             │                        │          │
-│   │  ✗ Higher latency      │             │  ✗ Same machine only   │          │
-│   │  ✗ No real streaming   │             │  ✗ No cross-network    │          │
-│   │                        │             │                        │          │
-│   └────────────────────────┘             └────────────────────────┘          │
+│   ┌────────────────────────┐                                                │
+│   │                        │                                                │
+│   │  ✓ Fastest local       │                                                │
+│   │  ✓ No network stack    │                                                │
+│   │  ✓ File permissions    │                                                │
+│   │  ✓ Bidirectional       │                                                │
+│   │  ✓ Streaming mode      │                                                │
+│   │                        │                                                │
+│   │  ✗ Same machine only   │                                                │
+│   │  ✗ No cross-network    │                                                │
+│   │                        │                                                │
+│   └────────────────────────┘                                                │
 │                                                                               │
-│   WHEN TO USE:                           WHEN TO USE:                        │
-│   ─────────────                          ─────────────                       │
-│   • Remote servers                       • Local Hyperf server               │
-│   • Microservices                        • Docker containers                 │
-│   • Cloud deployments                    • High-performance needs            │
-│   • Multi-machine setups                 • Real-time streaming               │
-│   • Behind load balancers                • Low-latency requirements          │
+│   WHEN TO USE:                                                               │
+│   ─────────────                                                              │
+│   • Local Hyperf server                                                      │
+│   • Docker containers                                                        │
+│   • High-performance needs                                                   │
+│   • Real-time streaming                                                      │
+│   • Low-latency requirements                                                 │
 │                                                                               │
 ├──────────────────────────────────────────────────────────────────────────────┤
 │                                                                               │
-│   CODE EXAMPLES:                                                             │
-│   ──────────────                                                             │
-│                                                                               │
-│   // HTTP Transport                                                          │
-│   $transport = new HttpTransport(                                            │
-│       'http://api.example.com:9501',                                         │
-│       ['Authorization' => 'Bearer token']                                    │
-│   );                                                                         │
+│   CODE EXAMPLE:                                                              │
+│   ─────────────                                                              │
 │                                                                               │
 │   // Unix Socket Transport                                                   │
 │   $transport = new SwooleSocketTransport(                                      │
@@ -698,11 +692,10 @@ public function handle(ParsedCommand $command, ContextInterface $context): Comma
 │   │                            │            │   --socket=/var/     │        │
 │   │  ┌──────────────────────┐  │            │   run/hyperf.sock    │        │
 │   │  │                      │  │            │                      │        │
-│   │  │    ShellProcess      │  │◀══════════▶│   or with HTTP:      │        │
+│   │  │    ShellProcess      │  │◀══════════▶│                      │        │
 │   │  │  (Background Process) │  │    Unix   │                      │        │
-│   │  │                      │  │   Socket   │   php client.php     │        │
-│   │  └──────────┬───────────┘  │            │   --http=localhost   │        │
-│   │             │              │            │   :9501              │        │
+│   │  │                      │  │   Socket   │                      │        │
+│   │  └──────────┬───────────┘  │            │                      │        │
 │   │             ▼              │            │                      │        │
 │   │  ┌──────────────────────┐  │            └──────────────────────┘        │
 │   │  │                      │  │                                             │
@@ -1320,43 +1313,6 @@ $shell = new Shell($transport, 'myapp> ');
 $shell->run();
 ```
 
-### HTTP Server (Without Swoole)
-
-For environments without Swoole, use HTTP transport:
-
-```php
-<?php
-// http-server.php - Run with: php -S localhost:9501 http-server.php
-
-use NashGao\InteractiveShell\Parser\ShellParser;
-use NashGao\InteractiveShell\Server\Handler\CommandRegistry;
-
-$context = new ArrayContext($container, $config);
-$registry = new CommandRegistry($context);
-$registry->register(new PingHandler());
-// ... register handlers
-
-// Handle incoming requests
-$input = file_get_contents('php://input');
-$data = json_decode($input, true);
-
-if ($data === null) {
-    http_response_code(400);
-    echo json_encode(['error' => 'Invalid JSON']);
-    exit;
-}
-
-$parser = new ShellParser();
-$command = isset($data['raw'])
-    ? $parser->parse($data['raw'])
-    : new ParsedCommand($data['command'] ?? '', $data['arguments'] ?? [], $data['options'] ?? [], '', false);
-
-$result = $registry->execute($command);
-
-header('Content-Type: application/json');
-echo json_encode($result->toArray());
-```
-
 ---
 
 ## Output Formats
@@ -1591,8 +1547,6 @@ echo json_encode($result->toArray());
 | `examples/client.php` | Unix socket client (standard) | None |
 | `examples/streaming-server.php` | Real-time streaming server | ext-swoole |
 | `examples/streaming-client.php` | StreamingShell client demo | ext-swoole (optional) |
-| `examples/http-server.php` | HTTP REST server | None |
-| `examples/http-client.php` | HttpTransport client demo | None |
 
 **Quick Start:**
 ```bash
@@ -1603,10 +1557,6 @@ php examples/client.php    # Terminal 2
 # Streaming example (requires Swoole)
 php examples/streaming-server.php    # Terminal 1
 php examples/streaming-client.php    # Terminal 2
-
-# HTTP example
-php examples/http-server.php    # Terminal 1
-php examples/http-client.php    # Terminal 2
 ```
 
 ---
