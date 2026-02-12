@@ -7,8 +7,10 @@ namespace NashGao\InteractiveShell\Server\Hyperf;
 use NashGao\InteractiveShell\Command\CommandResult;
 use NashGao\InteractiveShell\Parser\ParsedCommand;
 use NashGao\InteractiveShell\Server\ContextInterface;
+use NashGao\InteractiveShell\Server\Handler\AsHandlerProvider;
 use NashGao\InteractiveShell\Server\Handler\AsShellHandler;
 use NashGao\InteractiveShell\Server\Handler\CommandHandlerInterface;
+use NashGao\InteractiveShell\Server\Handler\HandlerProviderInterface;
 use ReflectionClass;
 
 /**
@@ -81,6 +83,58 @@ final class HandlerDiscovery
         }
 
         return $handlers;
+    }
+
+    /**
+     * Discover annotated handler providers from the given classmap.
+     *
+     * @param array<string, string> $classMap Composer classmap (class FQCN => file path)
+     * @param array<string> $namespacePrefixes Namespace prefixes to scan
+     * @param callable(string): ?HandlerProviderInterface $resolver DI resolver callable
+     * @return array<HandlerProviderInterface>
+     */
+    public function discoverProviders(
+        array $classMap,
+        array $namespacePrefixes,
+        callable $resolver,
+    ): array {
+        if ($namespacePrefixes === []) {
+            return [];
+        }
+
+        $providers = [];
+
+        foreach ($classMap as $class => $file) {
+            if (!$this->matchesAnyPrefix($class, $namespacePrefixes)) {
+                continue;
+            }
+
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $reflection = new ReflectionClass($class);
+
+            if ($reflection->isAbstract() || $reflection->isInterface()) {
+                continue;
+            }
+
+            if (!$reflection->implementsInterface(HandlerProviderInterface::class)) {
+                continue;
+            }
+
+            $attributes = $reflection->getAttributes(AsHandlerProvider::class);
+            if ($attributes === []) {
+                continue;
+            }
+
+            $provider = $resolver($class);
+            if ($provider !== null) {
+                $providers[] = $provider;
+            }
+        }
+
+        return $providers;
     }
 
     /**

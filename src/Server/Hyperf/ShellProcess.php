@@ -16,6 +16,7 @@ use NashGao\InteractiveShell\Server\Handler\BuiltIn\PingHandler;
 use NashGao\InteractiveShell\Server\Handler\BuiltIn\RoutesHandler;
 use NashGao\InteractiveShell\Server\Handler\CommandHandlerInterface;
 use NashGao\InteractiveShell\Server\Handler\CommandRegistry;
+use NashGao\InteractiveShell\Server\Handler\HandlerProviderInterface;
 use NashGao\InteractiveShell\Server\SocketServer;
 use Psr\Container\ContainerInterface;
 
@@ -100,6 +101,44 @@ final class ShellProcess extends AbstractProcess
         // HelpHandler needs the registry reference
         $registry->register(new HelpHandler($registry));
 
+        // Register handlers from config-listed providers
+        $providerClasses = $this->config->get('interactive_shell.providers', []);
+        foreach ($providerClasses as $providerClass) {
+            $provider = $this->resolveProvider($providerClass);
+            if ($provider !== null) {
+                $registry->registerMany($provider->getHandlers());
+            }
+        }
+
+        $discoveryEnabled = (bool) $this->config->get('interactive_shell.handler_discovery.enabled', true);
+        $classMap = [];
+        /** @var array<string> $namespacePrefixes */
+        $namespacePrefixes = [];
+
+        if ($discoveryEnabled) {
+            $namespacePrefixes = $this->config->get(
+                'interactive_shell.handler_discovery.namespaces',
+                ['App\\Shell\\']
+            );
+            $classMap = $this->getComposerClassMap();
+            $discovery = new HandlerDiscovery();
+
+            // Auto-discover annotated providers (skip already-registered commands)
+            $discoveredProviders = $discovery->discoverProviders(
+                $classMap,
+                $namespacePrefixes,
+                fn(string $class): ?HandlerProviderInterface => $this->resolveProvider($class),
+            );
+
+            foreach ($discoveredProviders as $provider) {
+                foreach ($provider->getHandlers() as $handler) {
+                    if (!$registry->has($handler->getCommand())) {
+                        $registry->register($handler);
+                    }
+                }
+            }
+        }
+
         // Register custom handlers from config
         $customHandlers = $this->config->get('interactive_shell.handlers', []);
         foreach ($customHandlers as $handlerClass) {
@@ -110,17 +149,10 @@ final class ShellProcess extends AbstractProcess
         }
 
         // Auto-discover annotated handlers (skip already-registered commands)
-        $discoveryEnabled = (bool) $this->config->get('interactive_shell.handler_discovery.enabled', true);
         if ($discoveryEnabled) {
-            /** @var array<string> $namespacePrefixes */
-            $namespacePrefixes = $this->config->get(
-                'interactive_shell.handler_discovery.namespaces',
-                ['App\\Shell\\']
-            );
-
-            $discovery = new HandlerDiscovery();
+            $discovery ??= new HandlerDiscovery();
             $discovered = $discovery->discover(
-                $this->getComposerClassMap(),
+                $classMap,
                 $namespacePrefixes,
                 fn(string $class): ?CommandHandlerInterface => $this->resolveHandler($class),
             );
@@ -153,6 +185,26 @@ final class ShellProcess extends AbstractProcess
         $loader = require $autoloadFile;
 
         return $loader->getClassMap();
+    }
+
+    private function resolveProvider(string $class): ?HandlerProviderInterface
+    {
+        if (!class_exists($class)) {
+            return null;
+        }
+
+        if (!is_subclass_of($class, HandlerProviderInterface::class)) {
+            return null;
+        }
+
+        if ($this->container->has($class)) {
+            $provider = $this->container->get($class);
+            if ($provider instanceof HandlerProviderInterface) {
+                return $provider;
+            }
+        }
+
+        return new $class();
     }
 
     private function resolveHandler(string $class): ?CommandHandlerInterface

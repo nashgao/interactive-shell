@@ -57,6 +57,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Handler Providers
+    |--------------------------------------------------------------------------
+    |
+    | Register handler providers that supply groups of related handlers.
+    | Each provider must implement
+    | NashGao\InteractiveShell\Server\Handler\HandlerProviderInterface.
+    |
+    | Providers are resolved from the container if registered, allowing
+    | dependency injection. Useful for bundling related handlers,
+    | conditional registration, and third-party packages.
+    |
+    | Providers can also be auto-discovered using the #[AsHandlerProvider]
+    | attribute when handler_discovery is enabled.
+    |
+    | Example:
+    | 'providers' => [
+    |     App\Shell\Providers\DatabaseHandlerProvider::class,
+    | ],
+    |
+    */
+    'providers' => [],
+
+    /*
+    |--------------------------------------------------------------------------
     | Custom Command Handlers
     |--------------------------------------------------------------------------
     |
