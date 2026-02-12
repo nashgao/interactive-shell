@@ -8,7 +8,7 @@
  * This demonstrates real-time message reception while maintaining command input.
  *
  * Requirements:
- *   - ext-swoole: Recommended for best performance (falls back to polling mode)
+ *   - ext-swoole: Required for coroutine-based async I/O
  *
  * First start the server:    php examples/streaming-server.php
  * Then run this client:      php examples/streaming-client.php
@@ -43,7 +43,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use NashGao\InteractiveShell\StreamingShell;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -61,13 +61,6 @@ if (!file_exists(SOCKET_PATH)) {
     $output->writeln('<comment>Note: The streaming server requires ext-swoole.</comment>');
     $output->writeln('');
     exit(1);
-}
-
-// Check for Swoole (optional but recommended)
-if (!extension_loaded('swoole')) {
-    $output->writeln('<comment>Note: Swoole not detected. Running in polling mode.</comment>');
-    $output->writeln('<comment>For best streaming performance, install: pecl install swoole</comment>');
-    $output->writeln('');
 }
 
 $output->writeln('<info>Streaming Shell Client</info>');
@@ -88,8 +81,8 @@ $output->writeln('');
 $output->writeln('Built-in: help, clear, exit');
 $output->writeln('');
 
-// Create streaming transport with Unix socket
-$transport = new UnixSocketTransport(
+// Create streaming transport with Swoole socket
+$transport = new SwooleSocketTransport(
     socketPath: SOCKET_PATH,
     timeout: 0.0,  // No timeout for streaming
 );

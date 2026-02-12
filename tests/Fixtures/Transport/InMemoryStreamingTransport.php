@@ -13,7 +13,7 @@ use NashGao\InteractiveShell\Transport\StreamingTransportInterface;
 /**
  * In-memory streaming transport for testing StreamingShell.
  *
- * This transport provides the same interface as UnixSocketTransport but
+ * This transport provides the same interface as SwooleSocketTransport but
  * operates entirely in memory. Messages can be queued programmatically
  * and will be delivered to registered callbacks or via receive().
  *

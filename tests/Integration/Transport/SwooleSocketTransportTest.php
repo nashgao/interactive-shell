@@ -181,6 +181,16 @@ final class SwooleSocketTransportTest extends TestCase
         $transport->startStreaming();
     }
 
+    public function testConnectFailsForNonexistentSocket(): void
+    {
+        $transport = new SwooleSocketTransport('/nonexistent/path/socket.sock');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Failed to connect');
+
+        $transport->connect();
+    }
+
     public function testMultipleDisconnectsDoNotThrow(): void
     {
         $transport = new SwooleSocketTransport('/tmp/test.sock');

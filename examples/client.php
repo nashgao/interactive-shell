@@ -5,7 +5,7 @@
  * Unix Socket Shell Client Example
  *
  * Connects to the Unix socket server and provides an interactive shell.
- * This demonstrates real IPC using the UnixSocketTransport.
+ * This demonstrates real IPC using the SwooleSocketTransport.
  *
  * First start the server:    php examples/server.php
  * Then run this client:      php examples/client.php
@@ -40,7 +40,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use NashGao\InteractiveShell\Shell;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -74,8 +74,8 @@ $output->writeln('Built-in: help, status, history, alias, clear, exit');
 $output->writeln('Formats: --format=table|json|csv|vertical or \\G');
 $output->writeln('');
 
-// Create transport with Unix socket
-$transport = new UnixSocketTransport(
+// Create transport with Swoole socket
+$transport = new SwooleSocketTransport(
     socketPath: SOCKET_PATH,
     timeout: 30.0,
 );

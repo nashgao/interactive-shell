@@ -11,7 +11,7 @@ use NashGao\InteractiveShell\Tests\Fixtures\Handler\DelayHandler;
 use NashGao\InteractiveShell\Tests\Fixtures\Handler\EchoHandler;
 use NashGao\InteractiveShell\Tests\Fixtures\Handler\ErrorHandler;
 use NashGao\InteractiveShell\Tests\Fixtures\Server\TestContext;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -49,25 +49,25 @@ final class SocketServerE2ETest extends TestCase
 
     public function testTransportInfoWithoutServer(): void
     {
-        $transport = new UnixSocketTransport($this->socketPath, timeout: 5.0);
+        $transport = new SwooleSocketTransport($this->socketPath, timeout: 5.0);
 
         $info = $transport->getInfo();
 
-        self::assertSame('unix_socket', $info['type']);
+        self::assertSame('swoole_socket', $info['type']);
         self::assertSame($this->socketPath, $info['path']);
         self::assertFalse($info['connected']);
     }
 
     public function testTransportEndpoint(): void
     {
-        $transport = new UnixSocketTransport($this->socketPath);
+        $transport = new SwooleSocketTransport($this->socketPath);
 
-        self::assertSame("unix://{$this->socketPath}", $transport->getEndpoint());
+        self::assertSame("swoole+unix://{$this->socketPath}", $transport->getEndpoint());
     }
 
     public function testConnectionToNonexistentSocketFails(): void
     {
-        $transport = new UnixSocketTransport('/nonexistent/path/socket.sock', timeout: 1.0);
+        $transport = new SwooleSocketTransport('/nonexistent/path/socket.sock', timeout: 1.0);
 
         $this->expectException(\RuntimeException::class);
         $transport->connect();
@@ -75,7 +75,7 @@ final class SocketServerE2ETest extends TestCase
 
     public function testTransportSupportsStreaming(): void
     {
-        $transport = new UnixSocketTransport($this->socketPath);
+        $transport = new SwooleSocketTransport($this->socketPath);
 
         self::assertTrue($transport->supportsStreaming());
     }
@@ -146,7 +146,7 @@ final class SocketServerE2ETest extends TestCase
                 \Swoole\Coroutine::sleep(0.1);
 
                 // Create client
-                $transport = new UnixSocketTransport($this->socketPath, timeout: 5.0);
+                $transport = new SwooleSocketTransport($this->socketPath, timeout: 5.0);
                 $transport->connect();
 
                 // Welcome message is now consumed by connect() — buffer is clean
@@ -221,7 +221,7 @@ final class SocketServerE2ETest extends TestCase
 
                 \Swoole\Coroutine::sleep(0.1);
 
-                $transport = new UnixSocketTransport($this->socketPath, timeout: 5.0);
+                $transport = new SwooleSocketTransport($this->socketPath, timeout: 5.0);
                 $transport->connect();
 
                 // Welcome message is now consumed by connect() — buffer is clean

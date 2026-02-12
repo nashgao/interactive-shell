@@ -78,22 +78,25 @@ final class SocketConnectionPool
      * Return a connection to the pool.
      *
      * If the connection is still valid, it's added back to the pool.
-     * If disconnected, the pool size is decremented.
+     * If disconnected or push fails, the connection is closed and the pool size is decremented.
      */
     public function put(SwooleSocketTransport $transport): void
     {
         if ($this->closed) {
             $transport->disconnect();
+            $this->currentSize--;
             return;
         }
 
         if ($transport->isConnected()) {
-            // Stop streaming mode before returning to pool
             if ($transport->isStreaming()) {
                 $transport->stopStreaming();
             }
 
-            $this->pool->push($transport, 0.001);
+            if (!$this->pool->push($transport, 0.001)) {
+                $transport->disconnect();
+                $this->currentSize--;
+            }
         } else {
             $this->currentSize--;
         }

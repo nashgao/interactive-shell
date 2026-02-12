@@ -9,15 +9,12 @@ parameters:
         # E2E tests require Swoole extension
         - tests/E2E/
     ignoreErrors:
-        # Swoole classes are only available when ext-swoole is loaded
+        # Swoole namespace-level functions not visible to static analysis
         -
-            message: '#^Class Swoole\\#'
+            message: '#Function Swoole\\Coroutine\\run not found#'
             reportUnmatched: false
         -
-            message: '#^Function go not found\.$#'
-            reportUnmatched: false
-        -
-            message: '#Function Swoole\\\\Coroutine\\\\run not found#'
+            message: '#Function Swoole\\Coroutine\\go not found#'
             reportUnmatched: false
         # Unreachable branches from defensive type checks
         -

@@ -7,7 +7,7 @@ namespace NashGao\InteractiveShell\Tests\E2E\Hyperf;
 use Hyperf\Contract\ConfigInterface;
 use NashGao\InteractiveShell\Parser\ParsedCommand;
 use NashGao\InteractiveShell\Server\Hyperf\ShellProcess;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 
@@ -76,7 +76,7 @@ final class HyperfServerE2ETest extends TestCase
                 \Swoole\Coroutine::sleep(0.1);
 
                 // Then: A client can connect
-                $transport = new UnixSocketTransport($this->socketPath, 5.0);
+                $transport = new SwooleSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
 
                 $connectionSuccessful = $transport->isConnected();
@@ -121,7 +121,7 @@ final class HyperfServerE2ETest extends TestCase
                 \Swoole\Coroutine::sleep(0.1);
 
                 // When: Consumer connects and executes the built-in ping command
-                $transport = new UnixSocketTransport($this->socketPath, 5.0);
+                $transport = new SwooleSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
 
 
@@ -170,7 +170,7 @@ final class HyperfServerE2ETest extends TestCase
 
                 \Swoole\Coroutine::sleep(0.1);
 
-                $transport = new UnixSocketTransport($this->socketPath, 5.0);
+                $transport = new SwooleSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
 
                 // When: Consumer requests config
@@ -216,7 +216,7 @@ final class HyperfServerE2ETest extends TestCase
 
                 \Swoole\Coroutine::sleep(0.1);
 
-                $transport = new UnixSocketTransport($this->socketPath, 5.0);
+                $transport = new SwooleSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
 
                 // When: Consumer requests command list
@@ -268,7 +268,7 @@ final class HyperfServerE2ETest extends TestCase
 
                 \Swoole\Coroutine::sleep(0.1);
 
-                $transport = new UnixSocketTransport($this->socketPath, 5.0);
+                $transport = new SwooleSocketTransport($this->socketPath, 5.0);
                 $transport->connect();
 
                 // When: Consumer requests help for a command
@@ -315,8 +315,8 @@ final class HyperfServerE2ETest extends TestCase
                 \Swoole\Coroutine::sleep(0.1);
 
                 // When: Two clients connect and execute commands
-                $transport1 = new UnixSocketTransport($this->socketPath, 5.0);
-                $transport2 = new UnixSocketTransport($this->socketPath, 5.0);
+                $transport1 = new SwooleSocketTransport($this->socketPath, 5.0);
+                $transport2 = new SwooleSocketTransport($this->socketPath, 5.0);
 
                 $transport1->connect();
                 $transport2->connect();

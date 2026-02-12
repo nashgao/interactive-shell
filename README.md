@@ -12,8 +12,8 @@ Interactive shell library with pluggable transports and streaming support. Build
 ## Features
 
 - **Standard Shell (REPL)**: Traditional request/response interactive shell with readline support
-- **Streaming Shell**: Bidirectional streaming for real-time message processing (with Swoole or polling fallback)
-- **Pluggable Transports**: HTTP, Unix Socket, or implement your own via `TransportInterface`
+- **Streaming Shell**: Bidirectional streaming for real-time message processing (Swoole coroutines)
+- **Pluggable Transports**: Unix Socket (Swoole), or implement your own via `TransportInterface`
 - **Multiple Output Formats**: Table (ASCII), JSON, CSV, Vertical (MySQL `\G` style)
 - **Advanced Command Parsing**: Quote handling, escape sequences, options (`--format=json`), and `\G` terminator
 - **Shell Features**: Command history with persistence, configurable aliases, multi-line input
@@ -23,12 +23,11 @@ Interactive shell library with pluggable transports and streaming support. Build
 ## Requirements
 
 - PHP 8.1 or higher
+- ext-swoole (coroutine-based async I/O)
 - Symfony Console ^6.0|^7.0
-- Guzzle HTTP ^7.0
 
 ### Optional Extensions
 
-- `ext-swoole`: Required for StreamingShell with coroutine-based I/O (recommended for production streaming)
 - `ext-readline`: Recommended for better input handling and history navigation
 
 ## Installation
@@ -45,16 +44,14 @@ composer require nashgao/interactive-shell
 <?php
 
 use NashGao\InteractiveShell\Shell;
-use NashGao\InteractiveShell\Transport\HttpTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-// Create HTTP transport pointing to your backend
-$transport = new HttpTransport(
-    serverUrl: 'http://localhost:8080',
-    timeout: 30.0,
-    executePath: '/runtime/command/execute',
-    pingPath: '/ping'
+// Create Swoole socket transport pointing to your backend
+$transport = new SwooleSocketTransport(
+    socketPath: '/var/run/myapp.sock',
+    timeout: 30.0
 );
 
 // Create shell with custom prompt and aliases
@@ -77,7 +74,7 @@ exit($exitCode);
 
 **Example Session:**
 ```
-Connected to http://localhost:8080
+Connected to /var/run/myapp.sock
 Interactive Shell (type "help" for commands, "exit" to quit)
 
 myapp> users list --format=table
@@ -105,12 +102,12 @@ Goodbye!
 <?php
 
 use NashGao\InteractiveShell\StreamingShell;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-// Create streaming transport (Unix socket example)
-$transport = new UnixSocketTransport(
+// Create streaming transport (Swoole socket example)
+$transport = new SwooleSocketTransport(
     socketPath: '/var/run/mqtt-debug.sock',
     timeout: 30.0
 );
@@ -265,7 +262,7 @@ Shell Status:
   Session started: 2024-01-15 14:30:15
   Session duration: 00:05:23
   Commands executed: 12
-  Server: http://localhost:8080
+  Server: /var/run/myapp.sock
   Connected: Yes
 ```
 
@@ -316,49 +313,14 @@ $shell->setPrompt('admin@myapp> ');
 
 ### Transport Configuration
 
-#### HTTP Transport
+#### Swoole Socket Transport
 
 ```php
-use NashGao\InteractiveShell\Transport\HttpTransport;
-use GuzzleHttp\Client;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 
-$transport = new HttpTransport(
-    serverUrl: 'http://localhost:8080',
-    timeout: 30.0,                           // Request timeout in seconds
-    executePath: '/runtime/command/execute', // Command execution endpoint
-    pingPath: '/ping',                       // Health check endpoint
-    httpClient: new Client([                 // Optional custom Guzzle client
-        'headers' => [
-            'Authorization' => 'Bearer token123',
-        ],
-    ])
-);
-```
-
-**Expected Server Response Format:**
-```json
-{
-  "success": true,
-  "data": [
-    {"id": 1, "name": "Item 1"},
-    {"id": 2, "name": "Item 2"}
-  ],
-  "message": "Query OK, 2 rows returned",
-  "metadata": {
-    "execution_time": 0.125
-  }
-}
-```
-
-#### Unix Socket Transport
-
-```php
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
-
-$transport = new UnixSocketTransport(
+$transport = new SwooleSocketTransport(
     socketPath: '/var/run/myapp.sock',
     timeout: 30.0,                    // Socket timeout
-    bufferSize: 8192                  // Read buffer size
 );
 ```
 
@@ -577,9 +539,9 @@ Once the Hyperf server is running, connect using a client:
 
 ```php
 use NashGao\InteractiveShell\Shell;
-use NashGao\InteractiveShell\Transport\UnixSocketTransport;
+use NashGao\InteractiveShell\Transport\SwooleSocketTransport;
 
-$transport = new UnixSocketTransport(
+$transport = new SwooleSocketTransport(
     socketPath: '/var/run/hyperf-shell.sock',
     timeout: 30.0
 );
@@ -618,8 +580,7 @@ When running in Hyperf, these additional commands are available:
 
 | Class | Description |
 |-------|-------------|
-| `HttpTransport` | HTTP/HTTPS transport using Guzzle |
-| `UnixSocketTransport` | Unix domain socket transport (with streaming support) |
+| `SwooleSocketTransport` | Swoole coroutine-based Unix socket transport (with streaming support) |
 | `TransportInterface` | Interface for custom transport implementations |
 | `StreamingTransportInterface` | Extended interface for streaming transports |
 
@@ -702,16 +663,7 @@ The shell automatically saves:
 
 ### Streaming Mode Performance
 
-| Mode | Description | Performance | Requirements |
-|------|-------------|-------------|--------------|
-| **Swoole** | Coroutine-based async I/O | Excellent (true concurrency) | `ext-swoole` |
-| **Polling** | Stream select polling | Good (periodic checking) | None |
-
-**Recommendation**: Install Swoole extension for production streaming workloads:
-
-```bash
-pecl install swoole
-```
+The streaming shell uses Swoole coroutines for true concurrent I/O — message receiving, display, and user input each run in their own coroutine.
 
 ### Output Format Performance
 
@@ -758,7 +710,7 @@ composer phpstan
 
 - **Parser** (`tests/Unit/Parser/`): Command parsing, quote handling, escape sequences
 - **Handlers** (`tests/Unit/Server/Handler/`): Built-in command handlers
-- **Transport** (`tests/Integration/Transport/`): HTTP and socket communication
+- **Transport** (`tests/Integration/Transport/`): Socket transport communication
 - **Formatters** (`tests/Unit/Formatter/`): Table, JSON, CSV, Vertical output
 - **Shell** (`tests/Integration/`): Full shell lifecycle and command flow
 

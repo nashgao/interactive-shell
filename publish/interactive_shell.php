@@ -57,6 +57,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Handler Providers
+    |--------------------------------------------------------------------------
+    |
+    | Register handler providers that supply groups of related handlers.
+    | Each provider must implement
+    | NashGao\InteractiveShell\Server\Handler\HandlerProviderInterface.
+    |
+    | Providers are resolved from the container if registered, allowing
+    | dependency injection. Useful for bundling related handlers,
+    | conditional registration, and third-party packages.
+    |
+    | Providers can also be auto-discovered using the #[AsHandlerProvider]
+    | attribute when handler_discovery is enabled.
+    |
+    | Example:
+    | 'providers' => [
+    |     App\Shell\Providers\DatabaseHandlerProvider::class,
+    | ],
+    |
+    */
+    'providers' => [],
+
+    /*
+    |--------------------------------------------------------------------------
     | Custom Command Handlers
     |--------------------------------------------------------------------------
     |
@@ -74,4 +98,23 @@ return [
     |
     */
     'handlers' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Handler Auto-Discovery
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, classes annotated with #[AsShellHandler] will be
+    | automatically discovered and registered. Only classes within the
+    | configured namespace prefixes are scanned (via Composer classmap).
+    |
+    | Handlers registered via the 'handlers' array above take priority
+    | over auto-discovered ones. If a command name is already registered,
+    | the discovered handler is skipped.
+    |
+    */
+    'handler_discovery' => [
+        'enabled' => true,
+        'namespaces' => ['App\\Shell\\'],
+    ],
 ];

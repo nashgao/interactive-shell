@@ -19,7 +19,7 @@ use NashGao\InteractiveShell\Transport\TransportInterface;
  * Key characteristics:
  * - Synchronous request/response (no network latency)
  * - Deterministic behavior for reliable tests
- * - Same interface as real transports (UnixSocketTransport, HttpTransport)
+ * - Same interface as real transports (SwooleSocketTransport)
  *
  * Example usage:
  * ```php
