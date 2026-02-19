@@ -7,7 +7,7 @@ namespace NashGao\InteractiveShell\Parser;
 /**
  * Immutable value object representing a parsed shell command with its arguments and options.
  */
-readonly class ParsedCommand
+final readonly class ParsedCommand
 {
     /**
      * @param string $command The command name

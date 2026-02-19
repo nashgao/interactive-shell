@@ -19,10 +19,10 @@ use NashGao\InteractiveShell\Filter\Condition\ConditionInterface;
  * - Grouping: (condition) and (condition)
  * - Time expressions: timestamp > now() - interval '5m'
  */
-final class FilterParser
+final readonly class FilterParser
 {
     public function __construct(
-        private readonly RuleParser $ruleParser,
+        private RuleParser $ruleParser,
     ) {}
 
     /**
