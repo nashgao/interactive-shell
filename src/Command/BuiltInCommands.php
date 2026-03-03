@@ -19,7 +19,9 @@ final class BuiltInCommands
      * @var array<string, string>
      */
     private const COMMAND_MAP = [
-        'help' => 'handleHelp',
+        // 'help' intentionally omitted — forwarded to server so the server-side
+        // HelpHandler can list ALL registered commands (including domain-specific ones).
+        // Client-only commands (exit, clear, etc.) are standard shell conventions.
         'exit' => 'handleExit',
         'quit' => 'handleExit',
         'status' => 'handleStatus',
